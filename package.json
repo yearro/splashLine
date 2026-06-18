@@ -37,7 +37,10 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "build-android-prod": "eas build --platform android",
+    "build-android-preview": "eas build --platform android --profile preview",
+    "build-android-preview-local": "npx expo run:android --no-build-cache --device"
   },
   "private": true
 }
