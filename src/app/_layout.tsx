@@ -1,5 +1,6 @@
+import Header from '@/components/Header';
 import { useFonts } from 'expo-font';
-import { Slot } from "expo-router";
+import { Stack } from "expo-router";
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
@@ -25,7 +26,11 @@ const RootLayout = () => {
 
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-      <Slot />
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{
+          header: () => <Header />
+        }} />
+      </Stack>
     </SafeAreaProvider>
   )
 }
