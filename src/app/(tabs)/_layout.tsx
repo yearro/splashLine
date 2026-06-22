@@ -6,34 +6,35 @@ import { StyleSheet } from 'react-native'
 const TabsLayout = () => {
   return (
     <Tabs screenOptions={{
-      tabBarActiveTintColor: 'blue'
+      tabBarActiveTintColor: 'blue',
+      headerShown: false
     }}>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Queue',
-          tabBarIcon: ({ color }) => <Ionicons size={28} name={'grid-outline'} color={color} />
+          tabBarIcon: ({ color }) => <Ionicons size={28} name={'list-outline'} color={color} />
         }}
       />
       <Tabs.Screen
         name="service"
         options={{
           title: 'Service',
-          tabBarIcon: ({ color }) => <Ionicons size={28} name={'grid-outline'} color={color} />
+          tabBarIcon: ({ color }) => <Ionicons size={28} name={'add-circle-outline'} color={color} />
         }}
       />
       <Tabs.Screen
         name="history"
         options={{
           title: 'History',
-          tabBarIcon: ({ color }) => <Ionicons size={28} name={'grid-outline'} color={color} />
+          tabBarIcon: ({ color }) => <Ionicons size={28} name={'book-outline'} color={color} />
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
           title: 'Settings',
-          tabBarIcon: ({ color }) => <Ionicons size={28} name={'grid-outline'} color={color} />
+          tabBarIcon: ({ color }) => <Ionicons size={28} name={'settings-outline'} color={color} />
         }}
       />
     </Tabs>
