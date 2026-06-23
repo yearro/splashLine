@@ -1,21 +1,15 @@
-import Colors from '@/constants/Colors'
-import { StyleSheet, Text, View } from 'react-native'
+import GeneralView from '@/components/GeneralView'
+import { StyleSheet, Text } from 'react-native'
 
 const QueueScreen = () => {
   return (
-    <View style={styles.container}>
+    <GeneralView>
       <Text>LIVE OPERATIONS</Text>
-    </View>
+    </GeneralView>
   )
 }
 
 export default QueueScreen
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.background,
-
-    borderColor: 'black',
-  }
 })
