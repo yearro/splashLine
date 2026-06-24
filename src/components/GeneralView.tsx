@@ -13,8 +13,8 @@ export default GeneralView
 const styles = StyleSheet.create({
   containerSection: {
     flex: 1,
-    paddingTop: 10,
-    paddingHorizontal: 10,
+    paddingTop: 15,
+    paddingHorizontal: 20,
     backgroundColor: Colors.background,
   }
 })
