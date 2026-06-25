@@ -1,3 +1,4 @@
+import Colors from '@/constants/Colors'
 import { Ionicons } from '@expo/vector-icons'
 import { Tabs } from 'expo-router'
 
@@ -6,7 +7,7 @@ import { StyleSheet } from 'react-native'
 const TabsLayout = () => {
   return (
     <Tabs screenOptions={{
-      tabBarActiveTintColor: 'blue',
+      tabBarActiveTintColor: Colors.primary,
       headerShown: false
     }}>
       <Tabs.Screen

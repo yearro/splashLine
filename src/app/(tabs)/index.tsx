@@ -24,7 +24,6 @@ const QueueScreen = () => {
       <View>
         <QueueCardItem />
       </View>
-
     </GeneralView>
   )
 }
@@ -40,7 +39,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    //borderWidth: 1,
     marginBottom: 15,
   },
   queueCurrentInfo: {
