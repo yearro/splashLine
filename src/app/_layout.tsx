@@ -37,7 +37,7 @@ const RootLayout = () => {
                 alignItems: 'center',
               }}>
                 <Ionicons name="water-outline" size={26} color="#008190" />
-                <Text style={styles.title}>SPLASH-LAB</Text>
+                <Text style={styles.title}>SPLASH-LINE</Text>
               </View>
             ),
           }} />
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     marginLeft: 8,
-    fontFamily: 'Inter_18pt-Black'
+    fontFamily: 'Inter_18pt-Medium'
   }
 });
 
