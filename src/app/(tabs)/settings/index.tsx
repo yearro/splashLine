@@ -1,10 +1,12 @@
-import { StyleSheet, Text, View } from 'react-native'
+import Footer from '@/components/Footer';
+import GeneralView from '@/components/GeneralView';
+import { StyleSheet } from 'react-native';
 
 const SettingsScreen = () => {
   return (
-    <View>
-      <Text>SettingsScreen</Text>
-    </View>
+    <GeneralView>
+      <Footer />
+    </GeneralView>
   )
 }
 
