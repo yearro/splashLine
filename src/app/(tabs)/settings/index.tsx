@@ -1,11 +1,9 @@
 import Footer from '@/components/Footer';
 import GeneralView from '@/components/GeneralView';
+import SettingsButton from '@/components/SettingsButton';
 import UserCard from '@/components/UserCard';
-import Colors from '@/constants/Colors';
-import Ionicons from '@react-native-vector-icons/ionicons';
-import MaterialIcons from '@react-native-vector-icons/material-icons';
 import { router } from 'expo-router';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 const SettingsScreen = () => {
   return (
@@ -17,46 +15,13 @@ const SettingsScreen = () => {
       </View>
       <Text style={styles.smText}>BUSINESS</Text>
       <View style={styles.buttonsContainer}>
-        <Pressable onPress={() => router.push({ pathname: '/(tabs)/settings/services' })} style={({ pressed }) => [
-          {
-            backgroundColor: pressed ? '#d6e4f9' : '#eef4ff',
-          },
-          styles.button,
-        ]}>
-          <View style={styles.buttonInformation}>
-            <MaterialIcons name='local-car-wash' size={28} color={Colors.primary} style={styles.buttonImage} />
-            <Text style={styles.textButton}>Services</Text>
-          </View>
-          <Ionicons name='chevron-forward-outline' size={24} color='black' />
-        </Pressable>
+        <SettingsButton text='Services' icon='local-car-wash' onPress={() => router.push({ pathname: '/(tabs)/settings/services' })} />
         <View style={styles.divider} />
-        <Pressable onPress={() => router.push({ pathname: '/(tabs)/settings/packages' })} style={({ pressed }) => [
-          {
-            backgroundColor: pressed ? '#d6e4f9' : '#eef4ff',
-          },
-          styles.button,
-        ]}>
-          <View style={styles.buttonInformation}>
-            <MaterialIcons name='inventory-2' size={28} color={Colors.primary} style={styles.buttonImage} />
-            <Text style={styles.textButton}>Packages</Text>
-          </View>
-          <Ionicons name='chevron-forward-outline' size={24} color='black' />
-        </Pressable>
+        <SettingsButton text='Packages' icon='inventory-2' onPress={() => router.push({ pathname: '/(tabs)/settings/packages' })} />
       </View>
       <Text style={styles.smText}>ACCOUNT</Text>
       <View style={styles.buttonsContainer}>
-        <Pressable onPress={() => router.push({ pathname: '/(tabs)/settings/userInformation' })} style={({ pressed }) => [
-          {
-            backgroundColor: pressed ? '#d6e4f9' : '#eef4ff',
-          },
-          styles.button,
-        ]}>
-          <View style={styles.buttonInformation}>
-            <MaterialIcons name='person' size={28} color={Colors.primary} style={styles.buttonImage} />
-            <Text style={styles.textButton}>User Information</Text>
-          </View>
-          <Ionicons name='chevron-forward-outline' size={24} color='black' />
-        </Pressable>
+        <SettingsButton text='User Information' icon='person' onPress={() => router.push({ pathname: '/(tabs)/settings/userInformation' })} />
       </View>
       <Footer />
     </GeneralView>
@@ -84,28 +49,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingHorizontal: 15,
     marginVertical: 10
-  },
-  button: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginVertical: 5,
-    paddingVertical: 15,
-  },
-  buttonInformation: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  buttonImage: {
-    backgroundColor: '#d6e4f9',
-    padding: 8,
-    borderRadius: 5,
-  },
-  textButton: {
-    fontFamily: 'Inter_18pt-Medium',
-    fontSize: 16,
-    color: 'black',
-    marginLeft: 10
   },
   divider: {
     borderBottomColor: '#c4d7f0',
