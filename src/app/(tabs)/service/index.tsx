@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native'
 const ServiceScreen = () => {
   return (
     <View>
-      <Text>ServiceScreen</Text>
+      <Text>Add new car to the service</Text>
     </View>
   )
 }

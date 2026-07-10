@@ -4,6 +4,7 @@ import UserCard from '@/components/UserCard';
 import Colors from '@/constants/Colors';
 import Ionicons from '@react-native-vector-icons/ionicons';
 import MaterialIcons from '@react-native-vector-icons/material-icons';
+import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 const SettingsScreen = () => {
@@ -16,7 +17,12 @@ const SettingsScreen = () => {
       </View>
       <Text style={styles.smText}>BUSINESS</Text>
       <View style={styles.buttonsContainer}>
-        <Pressable style={styles.button}>
+        <Pressable onPress={() => router.push({ pathname: '/(tabs)/settings/services' })} style={({ pressed }) => [
+          {
+            backgroundColor: pressed ? '#d6e4f9' : '#eef4ff',
+          },
+          styles.button,
+        ]}>
           <View style={styles.buttonInformation}>
             <MaterialIcons name='local-car-wash' size={28} color={Colors.primary} style={styles.buttonImage} />
             <Text style={styles.textButton}>Services</Text>
@@ -24,7 +30,7 @@ const SettingsScreen = () => {
           <Ionicons name='chevron-forward-outline' size={24} color='black' />
         </Pressable>
         <View style={styles.divider} />
-        <Pressable style={({ pressed }) => [
+        <Pressable onPress={() => router.push({ pathname: '/(tabs)/settings/packages' })} style={({ pressed }) => [
           {
             backgroundColor: pressed ? '#d6e4f9' : '#eef4ff',
           },
@@ -39,7 +45,12 @@ const SettingsScreen = () => {
       </View>
       <Text style={styles.smText}>ACCOUNT</Text>
       <View style={styles.buttonsContainer}>
-        <Pressable style={styles.button}>
+        <Pressable onPress={() => router.push({ pathname: '/(tabs)/settings/userInformation' })} style={({ pressed }) => [
+          {
+            backgroundColor: pressed ? '#d6e4f9' : '#eef4ff',
+          },
+          styles.button,
+        ]}>
           <View style={styles.buttonInformation}>
             <MaterialIcons name='person' size={28} color={Colors.primary} style={styles.buttonImage} />
             <Text style={styles.textButton}>User Information</Text>
