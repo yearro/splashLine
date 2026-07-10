@@ -1,10 +1,11 @@
 import { carStatusList } from '@/constants/CarStatus';
 import Colors from '@/constants/Colors';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@react-native-vector-icons/ionicons';
+import glyphmaps from '@react-native-vector-icons/ionicons/glyphmaps/Ionicons.json';
 import { useEffect, useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-type IoniconsName = keyof typeof Ionicons.glyphMap;
+type IoniconsName = keyof typeof glyphmaps;
 
 /** Status IDs where the timer must NOT run */
 const TIMER_PAUSED_IDS = [5, 6, 7]; // Delivered, Paused, Cancelled
@@ -181,10 +182,10 @@ const CarCard = ({
           ]}
           accessibilityLabel={isDelivered ? "Finish service" : "Remove from queue"}
         >
-          <Ionicons 
-            name={isDelivered ? "checkmark-circle-outline" : "trash-outline"} 
-            size={20} 
-            color={isDelivered ? Colors.primary : "#ff4d4d"} 
+          <Ionicons
+            name={isDelivered ? "checkmark-circle-outline" : "trash-outline"}
+            size={20}
+            color={isDelivered ? Colors.primary : "#ff4d4d"}
           />
           <Text style={[
             styles.outsideRemoveBtnText,

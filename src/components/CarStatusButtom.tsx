@@ -1,10 +1,11 @@
 import { carStatusList } from '@/constants/CarStatus';
 import Colors from '@/constants/Colors';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@react-native-vector-icons/ionicons';
+import glyphmaps from '@react-native-vector-icons/ionicons/glyphmaps/Ionicons.json';
 import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-type IoniconsName = keyof typeof Ionicons.glyphMap;
+type IoniconsName = keyof typeof glyphmaps;
 
 const CarStatusButtom = () => {
   const [currentStatus, setCurrentStatus] = useState<number>(1)
@@ -22,7 +23,6 @@ const CarStatusButtom = () => {
   const handlerStatus = (status: number) => {
     if (status <= 0 || status > carStatusList.length) return
     setCurrentStatus(status)
-    console.log('si lo hace ', currentStatus)
   }
 
   return (

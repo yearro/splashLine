@@ -1,5 +1,5 @@
 import Colors from '@/constants/Colors'
-import { Ionicons } from '@expo/vector-icons'
+import Ionicons from '@react-native-vector-icons/ionicons'
 import { Tabs } from 'expo-router'
 
 import { StyleSheet } from 'react-native'
