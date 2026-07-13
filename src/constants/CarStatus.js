@@ -13,7 +13,7 @@ export const carStatusList = [
   },
   {
     "id": 3,
-    "label": "Detailing & Drying",
+    "label": "Detailing, Drying & Others",
     "description": "Interior vacuuming, hand-drying, and window cleaning are in progress.",
     "icon": "checkbox-outline"
   },
