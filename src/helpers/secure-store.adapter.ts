@@ -1,15 +1,17 @@
 import * as SecureStore from 'expo-secure-store';
 import { Alert } from 'react-native';
 
-export const setItem = async (key: string, value: string) => {
+export const secureSetItem = async (key: string, value: string) => {
   try {
-    return await SecureStore.setItemAsync(key, value);
+    await SecureStore.setItemAsync(key, value);
+    return true;
   } catch (error) {
     Alert.alert(`Problems saving ${value}`);
+    return false;
   }
 }
 
-export const getItem = async (key: string) => {
+export const secureGetItem = async (key: string) => {
   try {
     const value = await SecureStore.getItemAsync(key);
     return value;
@@ -18,7 +20,7 @@ export const getItem = async (key: string) => {
   }
 }
 
-export const removeItem = async (key: string) => {
+export const secureRemoveItem = async (key: string) => {
   try {
     return await SecureStore.deleteItemAsync(key);
   } catch (error) {

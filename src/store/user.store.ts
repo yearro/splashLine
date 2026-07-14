@@ -1,22 +1,27 @@
+import { secureGetItem, secureRemoveItem, secureSetItem } from '@/helpers/secure-store.adapter';
 import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
 
 interface UserStore {
   user: string | null;
-  setUser: (user: string) => void;
+  setUser: (user: string) => Promise<boolean>;
+  getUser: () => void;
   clearUser: () => void;
 }
 
-export const useUserStore = create<UserStore>()(
-  persist(
-    (set) => ({
-      user: null,
-      setUser: (user: string) => set(() => ({ user })),
-      clearUser: () => set(() => ({ user: null })),
-    }),
-    {
-      name: 'user',
-      storage: createJSONStorage(() => localStorage),
+export const useUserStore = create<UserStore>()((set, get) => ({
+  user: null,
+  setUser: async (user: string) => {
+    set({ user });
+    return await secureSetItem('user', user);
+  },
+  getUser: async () => {
+    const user = await secureGetItem('user');
+    if (user) {
+      set({ user });
     }
-  )
-);
+  },
+  clearUser: async () => {
+    set({ user: null });
+    await secureRemoveItem('user');
+  },
+}));

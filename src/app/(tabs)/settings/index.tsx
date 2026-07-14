@@ -2,13 +2,21 @@ import Footer from '@/components/Footer';
 import GeneralView from '@/components/GeneralView';
 import SettingsButton from '@/components/SettingsButton';
 import UserCard from '@/components/UserCard';
+import { useUserStore } from '@/store/user.store';
 import { router } from 'expo-router';
+import { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 const SettingsScreen = () => {
+  const { user, getUser } = useUserStore();
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
   return (
     <GeneralView>
-      <UserCard userName='Carlos Rodríguez' />
+      <UserCard userName={user || ''} />
       <View style={{ marginBottom: 20 }}>
         <Text style={styles.sectionTitle}>Settings</Text>
         <Text style={styles.sectionDescription}>Manage your account preferences and business configurations.</Text>
