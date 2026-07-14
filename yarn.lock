@@ -2208,6 +2208,11 @@ expo-router@~56.2.11:
     standard-navigation "^0.0.5"
     vaul "^1.1.2"
 
+expo-secure-store@~56.0.4:
+  version "56.0.4"
+  resolved "https://registry.yarnpkg.com/expo-secure-store/-/expo-secure-store-56.0.4.tgz#5f897b4446c208e4670a71c7d8b1cf1467161dd2"
+  integrity sha512-hjEi/gmpdFFJ9lYbdp3k3p/WchV7Gi0Qt8jt/m/0WJadqQrskafHAlDxbZkII1cN3Yd7zp9Lvkeq3UfGhSwirQ==
+
 expo-server@^56.0.5:
   version "56.0.5"
   resolved "https://registry.yarnpkg.com/expo-server/-/expo-server-56.0.5.tgz#601e9a80d166cb65b35f6a38e7a61dc6de12b91d"
@@ -3415,11 +3420,6 @@ react-native-is-edge-to-edge@^1.3.1:
   resolved "https://registry.yarnpkg.com/react-native-is-edge-to-edge/-/react-native-is-edge-to-edge-1.3.1.tgz#feb9a6a8faf0874298947edd556e5af22044e139"
   integrity sha512-NIXU/iT5+ORyCc7p0z2nnlkouYKX425vuU1OEm6bMMtWWR9yvb+Xg5AZmImTKoF9abxCPqrKC3rOZsKzUYgYZA==
 
-react-native-mmkv@^4.3.2:
-  version "4.3.2"
-  resolved "https://registry.yarnpkg.com/react-native-mmkv/-/react-native-mmkv-4.3.2.tgz#522978d2330932c538cce36093040826870ccb49"
-  integrity sha512-49OAyfkg0/TMWiWELZN6VuVQPZPhizwL4DTmp8b7B1md3dB/s3LH3mGfC3T+lp9W0y/rqxZMEnotLFTIbOAenQ==
-
 react-native-nitro-modules@^0.36.1:
   version "0.36.1"
   resolved "https://registry.yarnpkg.com/react-native-nitro-modules/-/react-native-nitro-modules-0.36.1.tgz#f697d96f772ce17930f15b81ad4b1e42550569ef"
@@ -4236,11 +4236,6 @@ zod@^3.25.76:
   version "3.25.76"
   resolved "https://registry.yarnpkg.com/zod/-/zod-3.25.76.tgz#26841c3f6fd22a6a2760e7ccb719179768471e34"
   integrity sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==
-
-zustand-mmkv-storage@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/zustand-mmkv-storage/-/zustand-mmkv-storage-1.0.0.tgz#35457257018c7edfe20f71b943c78e807c0a9f33"
-  integrity sha512-EEQbRFuf2sZ1tBsg69K9zRYCmaV8mL9CD9FUdc5zxWl3X0PE5lBobAm10d5cGcAXheYVt/XONsZ50rluMm42Sg==
 
 zustand@^5.0.14:
   version "5.0.14"
