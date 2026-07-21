@@ -8,6 +8,14 @@ export async function createService(name: string, price: number, description: st
   return result.lastInsertRowId;
 }
 
+export async function updateService(id: number, name: string, price: number, description: string) {
+  const db = await openDatabase();
+  const result = await db.runAsync(`
+    UPDATE services SET name = ?, price = ?, description = ? WHERE id = ?
+  `, [name, price, description, id]);
+  return result.lastInsertRowId;
+}
+
 export async function createServiceHistory(date: string, price: number, time_service: number) {
   const db = await openDatabase();
   const result = await db.runAsync(`

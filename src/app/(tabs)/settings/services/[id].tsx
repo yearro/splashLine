@@ -1,14 +1,16 @@
 import GeneralView from '@/components/GeneralView';
 import Colors from '@/constants/Colors';
+import { useBusinessStore } from '@/store/business.store';
 import { descriptionSchema, nameSchema, priceSchema } from '@/validations';
 import Ionicons from '@react-native-vector-icons/ionicons';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { Formik } from 'formik';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import * as yup from 'yup';
 
 const IdServiceScreen = () => {
   const { id } = useLocalSearchParams();
+  const { addToServices } = useBusinessStore();
 
   return (
     <GeneralView>
@@ -19,7 +21,7 @@ const IdServiceScreen = () => {
       <Formik
         initialValues={{
           serviceName: '',
-          servicePrice: 0,
+          servicePrice: '',
           serviceDescription: '',
         }}
         validationSchema={yup.object({
@@ -27,8 +29,20 @@ const IdServiceScreen = () => {
           servicePrice: priceSchema,
           serviceDescription: descriptionSchema,
         })}
-        onSubmit={(values) => {
-          console.log(values);
+        onSubmit={async (values) => {
+          const response = await addToServices(Number(id), values.serviceName, Number(values.servicePrice), values.serviceDescription);
+          if (!!response) {
+            Alert.alert('Success', 'Service added successfully', [
+              {
+                text: 'OK',
+                onPress: () => {
+                  router.back();
+                },
+              },
+            ]);
+          } else {
+            Alert.alert('Error', 'Failed to add service');
+          }
         }}
       >
         {props => (
@@ -46,7 +60,7 @@ const IdServiceScreen = () => {
               <Ionicons style={{ marginBottom: 20 }} name="cash-outline" size={24} color={Colors.primary} />
               <View style={{ flex: 1, marginLeft: 10 }}>
                 <TextInput
-                  placeholder="Price"
+                  placeholder="0"
                   keyboardType="numeric"
                   style={styles.input}
                   value={props.values.servicePrice.toString()}

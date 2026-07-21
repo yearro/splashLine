@@ -1,9 +1,10 @@
+import { createAppTables } from '@/services/schema';
 import Ionicons from '@react-native-vector-icons/ionicons';
 import { useFonts } from 'expo-font';
 import { Stack } from "expo-router";
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 
 SplashScreen.preventAutoHideAsync();
@@ -14,6 +15,13 @@ const RootLayout = () => {
     'Inter_18pt-Light': require('../../assets/fonts/Inter_18pt-Light.ttf'),
     'Inter_18pt-Medium': require('../../assets/fonts/Inter_18pt-Medium.ttf'),
   });
+  useEffect(() => {
+    try {
+      createAppTables()
+    } catch (error) {
+      Alert.alert('Error', 'Failed to create tables');
+    }
+  }, [])
 
   useEffect(() => {
     if (error) throw error;
