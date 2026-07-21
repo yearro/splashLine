@@ -14,8 +14,9 @@ const IdServiceScreen = () => {
 
   return (
     <GeneralView>
+      <Text>{id}</Text>
       <View style={{ marginBottom: 20 }}>
-        <Text style={styles.title}>{Number(id) < 0 ? 'Edit service' : 'Add service'}</Text>
+        <Text style={styles.title}>{Number(id) >= 0 ? 'Edit service' : 'Add service'}</Text>
         <Text style={styles.sectionDescription}>Manage your account preferences and business configurations.</Text>
       </View>
       <Formik

@@ -29,9 +29,9 @@ export const useBusinessStore = create<businessStore>()((set, get) => ({
   packages: [],
   addToServices: async (id: number, name: string, price: number, description: string) => {
     try {
-      const result = id === 0 ? await createService(name, price, description) : await updateService(id, name, price, description);
+      const result = id < 0 ? await createService(name, price, description) : await updateService(id, name, price, description);
       if (result) {
-        set((state) => ({ ...state, services: [...state.services, { id, name, price, description }] }));
+        set((state) => ({ ...state, services: [...state.services, { id: result, name, price, description }] }));
       }
       return result;
     } catch (error) {
