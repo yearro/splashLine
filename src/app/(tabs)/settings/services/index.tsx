@@ -30,12 +30,9 @@ const ServicesListScreen = () => {
           />
         )}
       />
-      <TouchableOpacity style={styles.addServiceButton} onPress={() => handleService(0)}>
+      <TouchableOpacity style={styles.addServiceButton} onPress={() => handleService(-1)}>
         <MaterialIcons name="add" size={24} color="white" />
       </TouchableOpacity>
-      {services.map((service: any) => (
-        <Text key={service.id}>{service.name}</Text>
-      ))}
       <Footer />
     </GeneralView>
   );
