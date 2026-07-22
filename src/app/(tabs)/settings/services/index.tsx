@@ -50,6 +50,15 @@ const ServicesListScreen = () => {
             onDelete={handleDelete}
           />
         )}
+        ListEmptyComponent={
+          <View style={styles.emptyState}>
+            <MaterialIcons name="local-car-wash" size={48} color={Colors.primary} />
+            <Text style={styles.emptyTitle}>No services yet</Text>
+            <Text style={styles.emptySubtitle}>
+              Tap the + button to add your first cleaning or maintenance service.
+            </Text>
+          </View>
+        }
       />
       <TouchableOpacity style={styles.addServiceButton} onPress={() => handleService(-1)}>
         <MaterialIcons name="add" size={24} color="white" />
@@ -79,7 +88,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: Colors.primary,
     borderRadius: 30,
-  }
+  },
+  emptyState: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 12,
+    paddingTop: 60,
+    paddingBottom: 80,
+  },
+  emptyTitle: {
+    fontFamily: 'Inter_18pt-Medium',
+    fontSize: 18,
+    color: '#333',
+  },
+  emptySubtitle: {
+    fontFamily: 'Inter_18pt-Light',
+    fontSize: 14,
+    color: '#888',
+    textAlign: 'center',
+    paddingHorizontal: 30,
+  },
 })
 
 export default ServicesListScreen;

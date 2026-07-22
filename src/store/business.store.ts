@@ -56,11 +56,11 @@ export const useBusinessStore = create<businessStore>()((set, get) => ({
       return false;
     }
   },
-  addToPackages: (item: any) => set((state) => ({
-    packages: [...state.packages, item],
+  addToPackages: (id: number, name: string, description: string) => set((state) => ({
+    packages: [...state.packages, { id, name, description }],
   })),
-  removeFromPackages: (item: any) => set((state) => ({
-    packages: state.packages.filter((i: any) => i !== item),
+  removeFromPackages: (id: number) => set((state) => ({
+    packages: state.packages.filter((i: packageItem) => i.id !== id),
   })),
   clearAll: () => set(() => ({
     services: [],
