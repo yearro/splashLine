@@ -22,7 +22,7 @@ const ServicesListScreen = () => {
   return (
     <GeneralView>
       <View style={{ marginBottom: 20 }}>
-        <Text style={styles.title}>Services List</Text>
+        <Text style={styles.title}>Services List ({services.length})</Text>
         <Text style={styles.sectionDescription}>Manage the individual cleaning and maintenance services available for customers.</Text>
       </View>
       <FlatList

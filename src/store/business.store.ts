@@ -31,6 +31,9 @@ export const useBusinessStore = create<businessStore>()((set, get) => ({
   addToServices: async (id: number, name: string, price: number, description: string) => {
     try {
       const result = id < 0 ? await createService(name, price, description) : await updateService(id, name, price, description);
+      if (id > 0) {
+        get().removeFromServices(id);
+      }
       if (result) {
         set((state) => ({ services: [...state.services, { id: result, name, price, description }] }));
       }
@@ -43,8 +46,8 @@ export const useBusinessStore = create<businessStore>()((set, get) => ({
     const services: any[] = await getAllServices();
     set(() => ({ services }));
   },
-  removeFromServices: (item: any) => set((state) => ({
-    services: state.services.filter((i: any) => i !== item),
+  removeFromServices: (id: number) => set((state) => ({
+    services: state.services.filter((i: serviceItem) => i.id !== id),
   })),
   addToPackages: (item: any) => set((state) => ({
     packages: [...state.packages, item],

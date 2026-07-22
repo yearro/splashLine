@@ -12,8 +12,8 @@ export async function updateService(id: number, name: string, price: number, des
   const db = await openDatabase();
   const result = await db.runAsync(`
     UPDATE services SET name = ?, price = ?, description = ? WHERE id = ?
-  `, [name, price, description, id]);
-  return result.lastInsertRowId;
+  `, [name, price, description, Number(id)]);
+  return Number(id);
 }
 
 export async function deleteService(id: number) {

@@ -14,7 +14,7 @@ const ServiceListItem = ({ id, name, price, description, onEdit }: ServiceListIt
     <View>
       <View style={styles.serviceItemContainer}>
         <View style={styles.serviceItemHeader}>
-          <Text style={styles.serviceItemTitle}>{name} {id}</Text>
+          <Text style={styles.serviceItemTitle}>{name}</Text>
           <Pressable onPress={() => onEdit(id)}>
             <MaterialIcons name="mode-edit" size={24} color={Colors.primary} />
           </Pressable>
