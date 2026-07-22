@@ -5,26 +5,41 @@ import { descriptionSchema, nameSchema, priceSchema } from '@/validations';
 import Ionicons from '@react-native-vector-icons/ionicons';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Formik } from 'formik';
+import { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import * as yup from 'yup';
 
 const IdServiceScreen = () => {
   const { id } = useLocalSearchParams();
-  const { addToServices } = useBusinessStore();
+  const { addToServices, services } = useBusinessStore();
+  const [initialValues, setInitialValues] = useState({
+    serviceName: '',
+    servicePrice: '',
+    serviceDescription: '',
+  });
+
+  useEffect(() => {
+    if (id !== '-1') {
+      const service = services.find((s) => s.id === Number(id));
+      if (service) {
+        setInitialValues({
+          serviceName: service.name,
+          servicePrice: service.price.toString(),
+          serviceDescription: service.description,
+        });
+      }
+    }
+  }, [id]);
 
   return (
     <GeneralView>
-      <Text>{id}</Text>
       <View style={{ marginBottom: 20 }}>
         <Text style={styles.title}>{Number(id) >= 0 ? 'Edit service' : 'Add service'}</Text>
         <Text style={styles.sectionDescription}>Manage your account preferences and business configurations.</Text>
       </View>
       <Formik
-        initialValues={{
-          serviceName: '',
-          servicePrice: '',
-          serviceDescription: '',
-        }}
+        initialValues={initialValues}
+        enableReinitialize={true}
         validationSchema={yup.object({
           serviceName: nameSchema,
           servicePrice: priceSchema,
