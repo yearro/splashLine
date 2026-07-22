@@ -1,4 +1,4 @@
-import { createService, getAllServices, updateService } from '@/services/dataService';
+import { createService, deleteService, getAllServices, updateService } from '@/services/dataService';
 import { create } from 'zustand';
 
 type serviceItem = {
@@ -19,7 +19,7 @@ interface businessStore {
   packages: packageItem[];
   addToServices: (id: number, name: string, price: number, description: string) => Promise<number | false>;
   fetchServices: () => Promise<void>;
-  removeFromServices: (id: number) => void;
+  removeFromServices: (id: number) => Promise<boolean>;
   addToPackages: (id: number, name: string, description: string) => void;
   removeFromPackages: (id: number) => void;
   clearAll: () => void;
@@ -46,9 +46,16 @@ export const useBusinessStore = create<businessStore>()((set, get) => ({
     const services: any[] = await getAllServices();
     set(() => ({ services }));
   },
-  removeFromServices: (id: number) => set((state) => ({
-    services: state.services.filter((i: serviceItem) => i.id !== id),
-  })),
+  removeFromServices: async (id: number) => {
+    try {
+      await deleteService(id);
+      set((state) => ({ services: state.services.filter((i: serviceItem) => i.id !== id) }))
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
   addToPackages: (item: any) => set((state) => ({
     packages: [...state.packages, item],
   })),

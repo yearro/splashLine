@@ -21,7 +21,7 @@ export async function deleteService(id: number) {
   const result = await db.runAsync(`
     DELETE FROM services WHERE id = ?
   `, [id]);
-  return result.lastInsertRowId;
+  return result.changes;
 }
 
 export async function getAllServices() {

@@ -6,12 +6,25 @@ import { useBusinessStore } from '@/store/business.store';
 import MaterialIcons from '@react-native-vector-icons/material-icons';
 import { router } from 'expo-router';
 import { useEffect } from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const ServicesListScreen = () => {
-  const { fetchServices } = useBusinessStore();
+  const { fetchServices, removeFromServices } = useBusinessStore();
   const handleService = (id: number) => {
     router.push(`../settings/services/${id}`);
+  }
+  const handleDelete = (id: number) => {
+    Alert.alert('Delete', 'Are you sure you want to delete this service?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {
+        text: 'Delete',
+        onPress: () => removeFromServices(id)
+      },
+    ]);
   }
 
   useEffect(() => {
@@ -34,6 +47,7 @@ const ServicesListScreen = () => {
             price={item.price}
             description={item.description}
             onEdit={handleService}
+            onDelete={handleDelete}
           />
         )}
       />
