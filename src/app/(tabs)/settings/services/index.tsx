@@ -5,12 +5,19 @@ import Colors from '@/constants/Colors';
 import { useBusinessStore } from '@/store/business.store';
 import MaterialIcons from '@react-native-vector-icons/material-icons';
 import { router } from 'expo-router';
+import { useEffect } from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const ServicesListScreen = () => {
+  const { fetchServices } = useBusinessStore();
   const handleService = (id: number) => {
     router.push(`../settings/services/${id}`);
   }
+
+  useEffect(() => {
+    fetchServices();
+  }, []);
+
   const { services } = useBusinessStore();
   return (
     <GeneralView>
