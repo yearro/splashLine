@@ -9,11 +9,24 @@ import { useEffect } from 'react';
 import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const ServicesListScreen = () => {
-  const { fetchServices, removeFromServices } = useBusinessStore();
+  const { fetchServices, removeFromServices, packages } = useBusinessStore();
   const handleService = (id: number) => {
     router.push(`../settings/services/${id}`);
   }
   const handleDelete = (id: number) => {
+    const isServiceInPackage = packages.some((pkg) => pkg.serviceIds?.includes(id));
+    if (isServiceInPackage) {
+      const associatedPackages = packages
+        .filter((pkg) => pkg.serviceIds?.includes(id))
+        .map((pkg) => pkg.name)
+        .join(', ');
+      Alert.alert(
+        'No se puede eliminar',
+        `Este servicio no se puede eliminar porque pertenece a los siguientes paquetes: ${associatedPackages}. Debes quitarlo del paquete o eliminar el paquete primero.`
+      );
+      return;
+    }
+
     Alert.alert('Delete', 'Are you sure you want to delete this service?', [
       {
         text: 'Cancel',
