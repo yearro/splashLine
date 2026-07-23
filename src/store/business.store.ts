@@ -12,6 +12,7 @@ type packageItem = {
   id: number;
   name: string;
   description: string;
+  serviceIds?: number[];
 }
 
 interface businessStore {
@@ -20,7 +21,8 @@ interface businessStore {
   addToServices: (id: number, name: string, price: number, description: string) => Promise<number | false>;
   fetchServices: () => Promise<void>;
   removeFromServices: (id: number) => Promise<boolean>;
-  addToPackages: (id: number, name: string, description: string) => void;
+  addToPackages: (id: number, name: string, description: string, serviceIds?: number[]) => void;
+  updatePackage: (id: number, name: string, description: string, serviceIds?: number[]) => void;
   removeFromPackages: (id: number) => void;
   clearAll: () => void;
 }
@@ -56,8 +58,13 @@ export const useBusinessStore = create<businessStore>()((set, get) => ({
       return false;
     }
   },
-  addToPackages: (id: number, name: string, description: string) => set((state) => ({
-    packages: [...state.packages, { id, name, description }],
+  addToPackages: (id: number, name: string, description: string, serviceIds?: number[]) => set((state) => ({
+    packages: [...state.packages, { id, name, description, serviceIds }],
+  })),
+  updatePackage: (id: number, name: string, description: string, serviceIds?: number[]) => set((state) => ({
+    packages: state.packages.map((pkg) =>
+      pkg.id === id ? { ...pkg, name, description, serviceIds } : pkg
+    ),
   })),
   removeFromPackages: (id: number) => set((state) => ({
     packages: state.packages.filter((i: packageItem) => i.id !== id),

@@ -4,10 +4,15 @@ import Colors from '@/constants/Colors';
 import { useBusinessStore } from '@/store/business.store';
 import MaterialIcons from '@react-native-vector-icons/material-icons';
 import { router } from 'expo-router';
+import { useEffect } from 'react';
 import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const PackagesListScreen = () => {
-  const { packages, removeFromPackages } = useBusinessStore();
+  const { packages, services, fetchServices, removeFromPackages } = useBusinessStore();
+
+  useEffect(() => {
+    fetchServices();
+  }, []);
 
   const handleDelete = (id: number) => {
     Alert.alert('Eliminar', '¿Estás seguro de eliminar este paquete?', [
@@ -16,12 +21,30 @@ const PackagesListScreen = () => {
     ]);
   };
 
+  const handleEdit = (id: number) => {
+    router.push({
+      pathname: '/(tabs)/settings/packages/new',
+      params: { id: id.toString() },
+    });
+  };
+
+  const getPackageServices = (serviceIds?: number[]) => {
+    if (!serviceIds || serviceIds.length === 0) return [];
+    return services.filter((s) => serviceIds.includes(s.id));
+  };
+
+  const getPackagePrice = (serviceIds?: number[]) => {
+    if (!serviceIds || serviceIds.length === 0) return 0;
+    return services
+      .filter((s) => serviceIds.includes(s.id))
+      .reduce((sum, s) => sum + s.price, 0);
+  };
+
   return (
     <GeneralView>
       <View style={{ marginBottom: 20 }}>
-        <Text style={styles.title}>Packages ({packages.length})</Text>
-        <Text style={styles.subtitle}>
-          Manage the bundles of services you offer to your customers.
+        <Text style={styles.sectionDescription}>
+          Manage the individual cleaning and maintenance services available for customers.
         </Text>
       </View>
 
@@ -37,33 +60,52 @@ const PackagesListScreen = () => {
         <FlatList
           data={packages}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <View style={styles.card}>
-              <View style={styles.cardBadge}>
-                <Text style={styles.cardBadgeText}>PACKAGE</Text>
-              </View>
-              <View style={styles.cardRow}>
-                <View style={styles.cardInfo}>
-                  <Text style={styles.cardName}>{item.name}</Text>
-                  <Text style={styles.cardDescription} numberOfLines={2}>
-                    {item.description}
-                  </Text>
+          contentContainerStyle={{ paddingBottom: 100 }}
+          renderItem={({ item }) => {
+            const price = getPackagePrice(item.serviceIds);
+            const includedServices = getPackageServices(item.serviceIds);
+            return (
+              <View style={styles.card}>
+                <View style={styles.cardHeader}>
+                  <Text style={styles.cardTitle}>{item.name}</Text>
+                  <View style={styles.actionButtons}>
+                    <TouchableOpacity
+                      onPress={() => handleEdit(item.id)}
+                      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                    >
+                      <MaterialIcons name="edit" size={24} color="#00a896" />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleDelete(item.id)}
+                      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                    >
+                      <MaterialIcons name="delete-outline" size={24} color="#e53935" />
+                    </TouchableOpacity>
+                  </View>
                 </View>
-                <View style={styles.cardIcon}>
-                  <MaterialIcons name="star" size={22} color="white" />
+
+                {item.description ? (
+                  <Text style={styles.cardDescription}>{item.description}</Text>
+                ) : null}
+
+                {includedServices.length > 0 && (
+                  <View style={styles.servicesListContainer}>
+                    {includedServices.map((service) => (
+                      <View key={service.id} style={styles.serviceItemRow}>
+                        <MaterialIcons name="check" size={20} color="#00a896" style={styles.checkIcon} />
+                        <Text style={styles.serviceItemName}>{service.name}</Text>
+                      </View>
+                    ))}
+                  </View>
+                )}
+
+                <View style={styles.priceRow}>
+                  <Text style={styles.priceSymbol}>$ </Text>
+                  <Text style={styles.priceAmount}>{price > 0 ? price : 15}</Text>
                 </View>
               </View>
-              <View style={styles.cardFooter}>
-                <TouchableOpacity
-                  style={styles.deleteBtn}
-                  onPress={() => handleDelete(item.id)}
-                >
-                  <MaterialIcons name="delete-outline" size={18} color={Colors.error} />
-                  <Text style={styles.deleteBtnText}>Delete</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          )}
+            );
+          }}
         />
       )}
 
@@ -82,16 +124,11 @@ const PackagesListScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  title: {
-    fontFamily: 'Inter_18pt-Black',
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 6,
-  },
-  subtitle: {
+  sectionDescription: {
     fontFamily: 'Inter_18pt-Light',
     fontSize: 14,
-    color: '#666',
+    color: '#333',
+    lineHeight: 20,
   },
   emptyState: {
     flex: 1,
@@ -113,76 +150,78 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
   },
   card: {
-    backgroundColor: 'white',
+    backgroundColor: '#ffffff',
     borderRadius: 16,
-    padding: 16,
-    marginBottom: 14,
+    padding: 20,
+    marginBottom: 16,
     borderWidth: 1,
     borderColor: '#eef4ff',
     shadowColor: '#000',
-    shadowOpacity: 0.06,
-    shadowRadius: 6,
+    shadowOpacity: 0.04,
+    shadowRadius: 8,
     shadowOffset: { width: 0, height: 2 },
     elevation: 2,
   },
-  cardBadge: {
-    alignSelf: 'flex-start',
-    backgroundColor: Colors.chip,
-    borderRadius: 6,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    marginBottom: 10,
-  },
-  cardBadgeText: {
-    fontFamily: 'Inter_18pt-Medium',
-    fontSize: 10,
-    color: Colors.primaryStrong,
-    letterSpacing: 1,
-  },
-  cardRow: {
+  cardHeader: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 12,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
   },
-  cardInfo: {
-    flex: 1,
-  },
-  cardName: {
+  cardTitle: {
     fontFamily: 'Inter_18pt-Black',
-    fontSize: 18,
-    color: '#111',
-    marginBottom: 4,
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#000000',
+    flex: 1,
+    marginRight: 12,
+  },
+  actionButtons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
   },
   cardDescription: {
     fontFamily: 'Inter_18pt-Light',
-    fontSize: 13,
-    color: '#666',
+    fontSize: 15,
+    color: '#333333',
+    lineHeight: 22,
+    marginBottom: 14,
   },
-  cardIcon: {
-    width: 42,
-    height: 42,
-    borderRadius: 10,
-    backgroundColor: Colors.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
+  servicesListContainer: {
+    gap: 12,
+    marginBottom: 20,
+    marginTop: 4,
   },
-  cardFooter: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    marginTop: 12,
-    borderTopWidth: 1,
-    borderTopColor: '#f0f4ff',
-    paddingTop: 10,
-  },
-  deleteBtn: {
+  serviceItemRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: 10,
   },
-  deleteBtnText: {
+  checkIcon: {
+    marginRight: 2,
+  },
+  serviceItemName: {
     fontFamily: 'Inter_18pt-Regular',
-    fontSize: 13,
-    color: Colors.error,
+    fontSize: 16,
+    color: '#2b3648',
+    fontWeight: '500',
+  },
+  priceRow: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+  },
+  priceSymbol: {
+    fontFamily: 'Inter_18pt-Black',
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#00a896',
+  },
+  priceAmount: {
+    fontFamily: 'Inter_18pt-Black',
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#00a896',
   },
   fab: {
     position: 'absolute',

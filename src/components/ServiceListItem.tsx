@@ -1,5 +1,4 @@
 import Colors from '@/constants/Colors';
-import Ionicons from '@react-native-vector-icons/ionicons';
 import MaterialIcons from '@react-native-vector-icons/material-icons';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
@@ -19,10 +18,10 @@ const ServiceListItem = ({ id, name, price, description, onEdit, onDelete }: Ser
           <Text style={styles.serviceItemTitle}>{name}</Text>
           <View style={{ flexDirection: 'row', gap: 20 }}>
             <Pressable onPress={() => onEdit(id)}>
-              <MaterialIcons name="mode-edit" size={24} color={Colors.primary} />
+              <MaterialIcons name="mode-edit" size={24} color="#00a896" />
             </Pressable>
             <Pressable onPress={() => onDelete(id)}>
-              <Ionicons name="trash-outline" size={24} color={Colors.error} />
+              <MaterialIcons name="delete-outline" size={24} color="#e53935" />
             </Pressable>
           </View>
         </View>

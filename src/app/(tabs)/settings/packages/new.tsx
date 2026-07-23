@@ -3,9 +3,9 @@ import Colors from '@/constants/Colors';
 import { useBusinessStore } from '@/store/business.store';
 import { descriptionSchema, nameSchema } from '@/validations';
 import MaterialIcons from '@react-native-vector-icons/material-icons';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { Formik } from 'formik';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Alert,
   ScrollView,
@@ -18,8 +18,34 @@ import {
 import * as yup from 'yup';
 
 const NewPackageScreen = () => {
-  const { services, addToPackages, packages } = useBusinessStore();
+  const { id } = useLocalSearchParams<{ id?: string }>();
+  const isEditing = Boolean(id);
+
+  const { services, fetchServices, addToPackages, updatePackage, packages } = useBusinessStore();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [initialValues, setInitialValues] = useState({
+    packageName: '',
+    packageDescription: '',
+  });
+
+  useEffect(() => {
+    fetchServices();
+  }, []);
+
+  useEffect(() => {
+    if (id) {
+      const existingPkg = packages.find((p) => p.id === Number(id));
+      if (existingPkg) {
+        setInitialValues({
+          packageName: existingPkg.name,
+          packageDescription: existingPkg.description,
+        });
+        if (existingPkg.serviceIds) {
+          setSelectedIds(existingPkg.serviceIds);
+        }
+      }
+    }
+  }, [id, packages]);
 
   const toggleService = (id: number) => {
     setSelectedIds((prev) =>
@@ -38,18 +64,21 @@ const NewPackageScreen = () => {
           <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
             <MaterialIcons name="arrow-back" size={20} color={Colors.primary} />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Add Package</Text>
+          <Text style={styles.headerTitle}>{isEditing ? 'Edit Package' : 'Add Package'}</Text>
           <View style={{ width: 36 }} />
         </View>
 
         {/* Hero */}
-        <Text style={styles.title}>Create Package</Text>
+        <Text style={styles.title}>{isEditing ? 'Edit Package' : 'Create Package'}</Text>
         <Text style={styles.subtitle}>
-          Configure a new bundle of services for your customers.
+          {isEditing
+            ? 'Modify the service details and included bundle options.'
+            : 'Configure a new bundle of services for your customers.'}
         </Text>
 
         <Formik
-          initialValues={{ packageName: '', packageDescription: '' }}
+          initialValues={initialValues}
+          enableReinitialize={true}
           validationSchema={yup.object({
             packageName: nameSchema,
             packageDescription: descriptionSchema,
@@ -59,18 +88,30 @@ const NewPackageScreen = () => {
               Alert.alert('No services', 'Please select at least one service for this package.');
               return;
             }
-            const newId = Date.now();
-            addToPackages(newId, values.packageName, values.packageDescription);
-            Alert.alert('Success', 'Package created successfully!', [
-              {
-                text: 'OK',
-                onPress: () => {
-                  resetForm();
-                  setSelectedIds([]);
-                  router.back();
+            if (isEditing && id) {
+              updatePackage(Number(id), values.packageName, values.packageDescription, selectedIds);
+              Alert.alert('Success', 'Package updated successfully!', [
+                {
+                  text: 'OK',
+                  onPress: () => {
+                    router.back();
+                  },
                 },
-              },
-            ]);
+              ]);
+            } else {
+              const newId = Date.now();
+              addToPackages(newId, values.packageName, values.packageDescription, selectedIds);
+              Alert.alert('Success', 'Package created successfully!', [
+                {
+                  text: 'OK',
+                  onPress: () => {
+                    resetForm();
+                    setSelectedIds([]);
+                    router.back();
+                  },
+                },
+              ]);
+            }
           }}
         >
           {(props) => (
@@ -78,7 +119,9 @@ const NewPackageScreen = () => {
               {/* Preview Card */}
               <View style={styles.previewCard}>
                 <View style={styles.previewBadge}>
-                  <Text style={styles.previewBadgeText}>NEW PACKAGE</Text>
+                  <Text style={styles.previewBadgeText}>
+                    {isEditing ? 'EDIT PACKAGE' : 'NEW PACKAGE'}
+                  </Text>
                 </View>
                 <View style={styles.previewCardRow}>
                   <View style={{ flex: 1 }}>
@@ -207,8 +250,8 @@ const NewPackageScreen = () => {
                 style={styles.submitBtn}
                 onPress={() => props.handleSubmit()}
               >
-                <MaterialIcons name="add" size={20} color="white" />
-                <Text style={styles.submitBtnText}>Create Package</Text>
+                <MaterialIcons name={isEditing ? 'save' : 'add'} size={20} color="white" />
+                <Text style={styles.submitBtnText}>{isEditing ? 'Save Package' : 'Create Package'}</Text>
               </TouchableOpacity>
 
               <View style={{ height: 40 }} />

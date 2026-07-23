@@ -9,7 +9,7 @@ export const priceSchema = yup.number()
 export const nameSchema = yup.string()
   .required('Name is required')
   .min(3, 'Name must be at least 3 characters')
-  .max(20, 'Name must be at most 20 characters');
+  .max(35, 'Name must be at most 35 characters');
 
 export const descriptionSchema = yup.string()
   .required('Description is required')
