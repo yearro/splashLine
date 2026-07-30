@@ -15,9 +15,9 @@ const PackagesListScreen = () => {
   }, []);
 
   const handleDelete = (id: number) => {
-    Alert.alert('Eliminar', '¿Estás seguro de eliminar este paquete?', [
-      { text: 'Cancelar', style: 'cancel' },
-      { text: 'Eliminar', style: 'destructive', onPress: () => removeFromPackages(id) },
+    Alert.alert('Delete', 'Are you sure you want to delete this package?', [
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'Delete', style: 'destructive', onPress: () => removeFromPackages(id) },
     ]);
   };
 

@@ -21,8 +21,8 @@ const ServicesListScreen = () => {
         .map((pkg) => pkg.name)
         .join(', ');
       Alert.alert(
-        'No se puede eliminar',
-        `Este servicio no se puede eliminar porque pertenece a los siguientes paquetes: ${associatedPackages}. Debes quitarlo del paquete o eliminar el paquete primero.`
+        'Cannot be deleted',
+        `This service cannot be deleted because it belongs to the following packages: ${associatedPackages}. You must remove it from the package or delete the package first.`
       );
       return;
     }
