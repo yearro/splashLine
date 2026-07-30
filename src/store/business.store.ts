@@ -1,3 +1,4 @@
+import { createPackage, getAllPackages, updatePackage } from '@/services/dataPackages';
 import { createService, deleteService, getAllServices, updateService } from '@/services/dataService';
 import { create } from 'zustand';
 
@@ -20,9 +21,9 @@ interface businessStore {
   packages: packageItem[];
   addToServices: (id: number, name: string, price: number, description: string) => Promise<number | false>;
   fetchServices: () => Promise<void>;
+  fetchPackages: () => Promise<void>;
   removeFromServices: (id: number) => Promise<boolean>;
-  addToPackages: (id: number, name: string, description: string, serviceIds?: number[]) => void;
-  updatePackage: (id: number, name: string, description: string, serviceIds?: number[]) => void;
+  addToPackages: (id: number, name: string, description: string, serviceIds?: number[]) => Promise<number | false>;
   removeFromPackages: (id: number) => void;
   clearAll: () => void;
 }
@@ -48,6 +49,10 @@ export const useBusinessStore = create<businessStore>()((set, get) => ({
     const services: any[] = await getAllServices();
     set(() => ({ services }));
   },
+  fetchPackages: async () => {
+    const packages: any[] = await getAllPackages();
+    set(() => ({ packages }));
+  },
   removeFromServices: async (id: number) => {
     try {
       await deleteService(id);
@@ -58,14 +63,21 @@ export const useBusinessStore = create<businessStore>()((set, get) => ({
       return false;
     }
   },
-  addToPackages: (id: number, name: string, description: string, serviceIds?: number[]) => set((state) => ({
-    packages: [...state.packages, { id, name, description, serviceIds }],
-  })),
-  updatePackage: (id: number, name: string, description: string, serviceIds?: number[]) => set((state) => ({
-    packages: state.packages.map((pkg) =>
-      pkg.id === id ? { ...pkg, name, description, serviceIds } : pkg
-    ),
-  })),
+  addToPackages: async (id: number, name: string, description: string, serviceIds: number[] = []) => {
+    console.log("llega al add to packages")
+    try {
+      const result = id < 0 ? await createPackage(name, description, serviceIds) : await updatePackage(id, name, description, serviceIds);
+      if (id > 0) {
+        get().removeFromPackages(id);
+      }
+      if (result) {
+        set((state) => ({ packages: [...state.packages, { id: result, name, description, serviceIds }] }));
+      }
+      return result;
+    } catch (error) {
+      return false;
+    }
+  },
   removeFromPackages: (id: number) => set((state) => ({
     packages: state.packages.filter((i: packageItem) => i.id !== id),
   })),

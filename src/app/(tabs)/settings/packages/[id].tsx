@@ -20,17 +20,12 @@ import * as yup from 'yup';
 const NewPackageScreen = () => {
   const { id } = useLocalSearchParams<{ id?: string }>();
   const isEditing = Boolean(id);
-
-  const { services, fetchServices, addToPackages, updatePackage, packages } = useBusinessStore();
+  const { services, addToPackages, packages } = useBusinessStore();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [initialValues, setInitialValues] = useState({
     packageName: '',
     packageDescription: '',
   });
-
-  useEffect(() => {
-    fetchServices();
-  }, []);
 
   useEffect(() => {
     if (id) {
@@ -83,34 +78,34 @@ const NewPackageScreen = () => {
             packageName: nameSchema,
             packageDescription: descriptionSchema,
           })}
-          onSubmit={(values, { resetForm }) => {
+          onSubmit={async (values, { resetForm }) => {
             if (selectedIds.length === 0) {
               Alert.alert('No services', 'Please select at least one service for this package.');
               return;
             }
-            if (isEditing && id) {
-              updatePackage(Number(id), values.packageName, values.packageDescription, selectedIds);
-              Alert.alert('Success', 'Package updated successfully!', [
-                {
-                  text: 'OK',
-                  onPress: () => {
-                    router.back();
+            const response = await addToPackages(Number(id), values.packageName, values.packageDescription, selectedIds);
+            if (!!response) {
+              if (isEditing && id) {
+                Alert.alert('Success', 'Package updated successfully!', [
+                  {
+                    text: 'OK',
+                    onPress: () => {
+                      router.back();
+                    },
                   },
-                },
-              ]);
-            } else {
-              const newId = Date.now();
-              addToPackages(newId, values.packageName, values.packageDescription, selectedIds);
-              Alert.alert('Success', 'Package created successfully!', [
-                {
-                  text: 'OK',
-                  onPress: () => {
-                    resetForm();
-                    setSelectedIds([]);
-                    router.back();
+                ]);
+              } else {
+                Alert.alert('Success', 'Package created successfully!', [
+                  {
+                    text: 'OK',
+                    onPress: () => {
+                      resetForm();
+                      setSelectedIds([]);
+                      router.back();
+                    },
                   },
-                },
-              ]);
+                ]);
+              }
             }
           }}
         >

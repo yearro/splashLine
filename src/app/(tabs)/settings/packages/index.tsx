@@ -8,10 +8,13 @@ import { useEffect } from 'react';
 import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const PackagesListScreen = () => {
-  const { packages, services, fetchServices, removeFromPackages } = useBusinessStore();
+  const { packages, services, fetchPackages, removeFromPackages, fetchServices } = useBusinessStore();
 
   useEffect(() => {
-    fetchServices();
+    fetchPackages();
+    if (services.length === 0) {
+      fetchServices();
+    }
   }, []);
 
   const handleDelete = (id: number) => {
@@ -20,13 +23,9 @@ const PackagesListScreen = () => {
       { text: 'Delete', style: 'destructive', onPress: () => removeFromPackages(id) },
     ]);
   };
-
-  const handleEdit = (id: number) => {
-    router.push({
-      pathname: '/(tabs)/settings/packages/new',
-      params: { id: id.toString() },
-    });
-  };
+  const handlePackages = (id: number) => {
+    router.push(`/(tabs)/settings/packages/${id}`);
+  }
 
   const getPackageServices = (serviceIds?: number[]) => {
     if (!serviceIds || serviceIds.length === 0) return [];
@@ -70,7 +69,7 @@ const PackagesListScreen = () => {
                   <Text style={styles.cardTitle}>{item.name}</Text>
                   <View style={styles.actionButtons}>
                     <TouchableOpacity
-                      onPress={() => handleEdit(item.id)}
+                      onPress={() => handlePackages(item.id)}
                       hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                     >
                       <MaterialIcons name="edit" size={24} color="#00a896" />
@@ -112,7 +111,7 @@ const PackagesListScreen = () => {
       {/* FAB */}
       <TouchableOpacity
         style={styles.fab}
-        onPress={() => router.push('/(tabs)/settings/packages/new')}
+        onPress={() => handlePackages(-1)}
         accessibilityLabel="Add new package"
       >
         <MaterialIcons name="add" size={28} color="white" />
