@@ -1,6 +1,4 @@
 import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
-import { mmkvStorage } from './utils.key.value';
 
 interface QueueStore {
   queue: any[];
@@ -9,26 +7,18 @@ interface QueueStore {
   clearQueue: () => void;
 }
 
-export const useQueueStore = create<QueueStore>()(
-  persist(
-    (set) => ({
+export const useQueueStore = create<QueueStore>()((set, get) => ({
+  queue: [],
+  addToQueue: (item: any) =>
+    set((state) => ({
+      queue: [...state.queue, item],
+    })),
+  removeFromQueue: (item: any) =>
+    set((state) => ({
+      queue: state.queue.filter((i: any) => i !== item),
+    })),
+  clearQueue: () =>
+    set((state) => ({
       queue: [],
-      addToQueue: (item: any) =>
-        set((state) => ({
-          queue: [...state.queue, item],
-        })),
-      removeFromQueue: (item: any) =>
-        set((state) => ({
-          queue: state.queue.filter((i: any) => i !== item),
-        })),
-      clearQueue: () =>
-        set((state) => ({
-          queue: [],
-        })),
-    }),
-    {
-      name: 'queue',
-      storage: createJSONStorage(mmkvStorage),
-    }
-  )
-);
+    })),
+}));
