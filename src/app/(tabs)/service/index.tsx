@@ -5,7 +5,7 @@ import { useQueueStore } from '@/store/queue.store';
 import MaterialIcons from '@react-native-vector-icons/material-icons';
 import { router } from 'expo-router';
 import { Formik } from 'formik';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Alert,
   ScrollView,
@@ -72,15 +72,14 @@ const ServiceScreen = () => {
         ? incServices.map((s) => s.name).join(' + ')
         : pkg.description || 'Full service bundle';
 
-    const icons = ['flash-on', 'local-car-wash', 'diamond', 'verified'];
+    const fallbackIcons = ['flash-on', 'local-car-wash', 'diamond', 'verified'];
     return {
       id: pkg.id,
       name: pkg.name,
       description: pkg.description || autoDesc,
       price: price > 0 ? price : 15,
-      iconName: icons[idx % icons.length],
+      iconName: pkg.icon || fallbackIcons[idx % fallbackIcons.length],
       isRecommended:
-        idx === 2 ||
         pkg.name.toLowerCase().includes('ceramic') ||
         pkg.name.toLowerCase().includes('premium'),
     };
@@ -192,7 +191,7 @@ const ServiceScreen = () => {
 
               {/* SELECT SERVICE TIER */}
               <Text style={[styles.sectionHeader, { marginTop: 8 }]}>SELECT SERVICE TIER</Text>
-              
+
               <View style={styles.tiersContainer}>
                 {packageOptions.length === 0 ? (
                   <View style={styles.emptyTiersBox}>

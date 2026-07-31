@@ -12,7 +12,8 @@ export async function createAppTables() {
     CREATE TABLE IF NOT EXISTS packages (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT,
-      description TEXT
+      description TEXT,
+      icon TEXT
     );
     CREATE TABLE IF NOT EXISTS package_services (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -27,5 +28,11 @@ export async function createAppTables() {
       price REAL,
       time_service INTEGER
     );
-  `)
+  `);
+
+  try {
+    await db.execAsync(`ALTER TABLE packages ADD COLUMN icon TEXT;`);
+  } catch (error) {
+    // Column might already exist
+  }
 }

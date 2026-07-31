@@ -17,11 +17,29 @@ import {
 } from 'react-native';
 import * as yup from 'yup';
 
+const PACKAGE_ICONS = [
+  { name: 'local-car-wash', label: 'Car Wash' },
+  { name: 'flash-on', label: 'Express' },
+  { name: 'diamond', label: 'Diamond' },
+  { name: 'verified', label: 'Verified' },
+  { name: 'star', label: 'Star' },
+  { name: 'shield', label: 'Shield' },
+  { name: 'auto-awesome', label: 'Awesome' },
+  { name: 'cleaning-services', label: 'Clean' },
+  { name: 'directions-car', label: 'Car' },
+  { name: 'water-drop', label: 'Water' },
+  { name: 'beach-access', label: 'Beach' },
+  { name: 'workspace-premium', label: 'Premium' },
+  { name: 'dry-cleaning', label: 'Dry' },
+  { name: 'dry', label: 'dry-hand' },
+];
+
 const NewPackageScreen = () => {
   const { id } = useLocalSearchParams<{ id?: string }>();
   const isEditing = Boolean(id);
   const { services, addToPackages, packages } = useBusinessStore();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [selectedIcon, setSelectedIcon] = useState<string>('local-car-wash');
   const [initialValues, setInitialValues] = useState({
     packageName: '',
     packageDescription: '',
@@ -35,6 +53,9 @@ const NewPackageScreen = () => {
           packageName: existingPkg.name,
           packageDescription: existingPkg.description,
         });
+        if (existingPkg.icon) {
+          setSelectedIcon(existingPkg.icon);
+        }
         if (existingPkg.serviceIds) {
           setSelectedIds(existingPkg.serviceIds);
         }
@@ -83,7 +104,13 @@ const NewPackageScreen = () => {
               Alert.alert('No services', 'Please select at least one service for this package.');
               return;
             }
-            const response = await addToPackages(Number(id), values.packageName, values.packageDescription, selectedIds);
+            const response = await addToPackages(
+              Number(id),
+              values.packageName,
+              values.packageDescription,
+              selectedIds,
+              selectedIcon
+            );
             if (!!response) {
               if (isEditing && id) {
                 Alert.alert('Success', 'Package updated successfully!', [
@@ -101,6 +128,7 @@ const NewPackageScreen = () => {
                     onPress: () => {
                       resetForm();
                       setSelectedIds([]);
+                      setSelectedIcon('local-car-wash');
                       router.back();
                     },
                   },
@@ -130,7 +158,7 @@ const NewPackageScreen = () => {
                     </Text>
                   </View>
                   <View style={styles.previewIcon}>
-                    <MaterialIcons name="star" size={22} color="white" />
+                    <MaterialIcons name={selectedIcon as any} size={24} color="white" />
                   </View>
                 </View>
                 <View style={styles.previewPriceRow}>
@@ -163,6 +191,28 @@ const NewPackageScreen = () => {
               {props.touched.packageName && props.errors.packageName && (
                 <Text style={styles.error}>{props.errors.packageName}</Text>
               )}
+
+              {/* Icon Selection */}
+              <Text style={styles.label}>Package Icon</Text>
+              <View style={styles.iconGrid}>
+                {PACKAGE_ICONS.map((item) => {
+                  const isSelected = selectedIcon === item.name;
+                  return (
+                    <TouchableOpacity
+                      key={item.name}
+                      style={[styles.iconChip, isSelected && styles.iconChipSelected]}
+                      onPress={() => setSelectedIcon(item.name)}
+                      activeOpacity={0.8}
+                    >
+                      <MaterialIcons
+                        name={item.name as any}
+                        size={22}
+                        color={isSelected ? 'white' : Colors.primaryStrong}
+                      />
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
 
               {/* Description */}
               <Text style={styles.label}>Description</Text>
@@ -383,6 +433,26 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: Colors.primaryStrong,
     marginBottom: 8,
+  },
+  iconGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+    marginBottom: 16,
+  },
+  iconChip: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderColor: '#dde6f5',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconChipSelected: {
+    backgroundColor: Colors.primary,
+    borderColor: Colors.primary,
   },
   input: {
     fontFamily: 'Inter_18pt-Light',

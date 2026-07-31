@@ -13,6 +13,7 @@ type packageItem = {
   id: number;
   name: string;
   description: string;
+  icon?: string;
   serviceIds?: number[];
 }
 
@@ -23,7 +24,7 @@ interface businessStore {
   fetchServices: () => Promise<void>;
   fetchPackages: () => Promise<void>;
   removeFromServices: (id: number) => Promise<boolean>;
-  addToPackages: (id: number, name: string, description: string, serviceIds?: number[]) => Promise<number | false>;
+  addToPackages: (id: number, name: string, description: string, serviceIds?: number[], icon?: string) => Promise<number | false>;
   removeFromPackages: (id: number) => void;
   clearAll: () => void;
 }
@@ -63,15 +64,15 @@ export const useBusinessStore = create<businessStore>()((set, get) => ({
       return false;
     }
   },
-  addToPackages: async (id: number, name: string, description: string, serviceIds: number[] = []) => {
+  addToPackages: async (id: number, name: string, description: string, serviceIds: number[] = [], icon: string = 'local-car-wash') => {
     console.log("llega al add to packages")
     try {
-      const result = id < 0 ? await createPackage(name, description, serviceIds) : await updatePackage(id, name, description, serviceIds);
+      const result = id < 0 ? await createPackage(name, description, serviceIds, icon) : await updatePackage(id, name, description, serviceIds, icon);
       if (id > 0) {
         get().removeFromPackages(id);
       }
       if (result) {
-        set((state) => ({ packages: [...state.packages, { id: result, name, description, serviceIds }] }));
+        set((state) => ({ packages: [...state.packages, { id: result, name, description, icon, serviceIds }] }));
       }
       return result;
     } catch (error) {

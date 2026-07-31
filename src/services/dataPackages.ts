@@ -1,8 +1,8 @@
 import { openDatabase } from "./db";
 
-export async function createPackage(name: string, description: string, services: number[]) {
+export async function createPackage(name: string, description: string, services: number[], icon: string = 'local-car-wash') {
   const db = await openDatabase();
-  const result = await db.runAsync("INSERT INTO packages (name, description) VALUES (?, ?)", [name, description]);
+  const result = await db.runAsync("INSERT INTO packages (name, description, icon) VALUES (?, ?, ?)", [name, description, icon]);
   const packageId = result.lastInsertRowId;
   if (services.length > 0) {
     services.forEach((serviceId) => {
@@ -12,9 +12,9 @@ export async function createPackage(name: string, description: string, services:
   return packageId;
 }
 
-export async function updatePackage(id: number, name: string, description: string, services: number[]) {
+export async function updatePackage(id: number, name: string, description: string, services: number[], icon: string = 'local-car-wash') {
   const db = await openDatabase();
-  await db.runAsync("UPDATE packages SET name = ?, description = ? WHERE id = ?", [name, description, id]);
+  await db.runAsync("UPDATE packages SET name = ?, description = ?, icon = ? WHERE id = ?", [name, description, icon, id]);
   await db.runAsync("DELETE FROM package_services WHERE package_id = ?", [id]);
   services.forEach((serviceId) => {
     db.runAsync("INSERT INTO package_services (package_id, service_id) VALUES (?, ?)", [id, serviceId]);

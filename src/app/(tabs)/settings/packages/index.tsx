@@ -66,7 +66,14 @@ const PackagesListScreen = () => {
             return (
               <View style={styles.card}>
                 <View style={styles.cardHeader}>
-                  <Text style={styles.cardTitle}>{item.name}</Text>
+                  <View style={styles.titleWithIcon}>
+                    {item.icon ? (
+                      <View style={styles.iconContainer}>
+                        <MaterialIcons name={item.icon as any} size={22} color={Colors.primary} />
+                      </View>
+                    ) : null}
+                    <Text style={styles.cardTitle}>{item.name}</Text>
+                  </View>
                   <View style={styles.actionButtons}>
                     <TouchableOpacity
                       onPress={() => handlePackages(item.id)}
@@ -167,13 +174,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 12,
   },
+  titleWithIcon: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    flex: 1,
+    marginRight: 12,
+  },
+  iconContainer: {
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    backgroundColor: '#e6f7f8',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   cardTitle: {
     fontFamily: 'Inter_18pt-Black',
     fontSize: 20,
     fontWeight: '700',
     color: '#000000',
     flex: 1,
-    marginRight: 12,
   },
   actionButtons: {
     flexDirection: 'row',
