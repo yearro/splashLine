@@ -16,7 +16,6 @@ const QueueScreen = () => {
       <Text style={styles.smText}>LIVE OPERATIONS</Text>
       <View style={styles.queueSection}>
         <Text style={styles.sectionTitle}>Service Queue</Text>
-        <Text style={styles.infoText}>{queue.length} Cars</Text>
       </View>
       <View style={styles.queueSection}>
         <View style={styles.queueCurrentInfo}>
@@ -24,8 +23,8 @@ const QueueScreen = () => {
           <Text style={styles.queCurrentText}>4:23 min</Text>
         </View>
         <View style={styles.queueCurrentInfo}>
-          <Text style={styles.smText}>ACTIVE BAY</Text>
-          <Text style={styles.queCurrentText}>02/03</Text>
+          <Text style={styles.smText}>TOTAL CARS</Text>
+          <Text style={styles.queCurrentText}>{queue.length} Cars</Text>
         </View>
       </View>
       <FlatList
@@ -78,14 +77,5 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_18pt-Regular',
     fontSize: 24,
     fontWeight: 'bold',
-  },
-  infoText: {
-    fontFamily: 'Inter_18pt-Regular',
-    backgroundColor: Colors.chip,
-    paddingHorizontal: 15,
-    paddingVertical: 5,
-    borderRadius: 50,
-    color: Colors.primary,
-    fontWeight: 'bold'
   }
 })
