@@ -5,6 +5,7 @@ interface QueueCardItemProps {
   licensePlate: string;
   packageName?: string;
   initialStatusId?: number;
+  onRemove?: () => void;
 }
 
 const QueueCardItem = ({
@@ -12,6 +13,7 @@ const QueueCardItem = ({
   licensePlate = 'KLR-8821',
   packageName = 'Ceramic Pro Coating',
   initialStatusId = 1,
+  onRemove,
 }: QueueCardItemProps) => {
   return (
     <CarCard
@@ -19,6 +21,7 @@ const QueueCardItem = ({
       licensePlate={licensePlate}
       packageName={packageName}
       initialStatusId={initialStatusId}
+      onRemove={onRemove}
     />
   );
 };

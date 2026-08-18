@@ -3,7 +3,7 @@ import { create } from 'zustand';
 interface QueueStore {
   queue: any[];
   addToQueue: (item: any) => void;
-  removeFromQueue: (item: any) => void;
+  removeFromQueue: (id: string) => void;
   clearQueue: () => void;
 }
 
@@ -13,9 +13,9 @@ export const useQueueStore = create<QueueStore>()((set, get) => ({
     set((state) => ({
       queue: [...state.queue, item],
     })),
-  removeFromQueue: (item: any) =>
+  removeFromQueue: (id: string) =>
     set((state) => ({
-      queue: state.queue.filter((i: any) => i !== item),
+      queue: state.queue.filter((i: any) => i.id !== id),
     })),
   clearQueue: () =>
     set((state) => ({

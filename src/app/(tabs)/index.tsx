@@ -5,7 +5,12 @@ import { useQueueStore } from '@/store/queue.store'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 
 const QueueScreen = () => {
-  const { queue } = useQueueStore()
+  const { queue, removeFromQueue } = useQueueStore()
+
+  const handleRemoveCar = (id: string) => {
+    removeFromQueue(id)
+  }
+
   return (
     <GeneralView>
       <Text style={styles.smText}>LIVE OPERATIONS</Text>
@@ -30,7 +35,9 @@ const QueueScreen = () => {
           licensePlate={item.plateNumber}
           packageName={item.tier}
           initialStatusId={1}
-          key={item.id} />
+          key={item.id}
+          onRemove={() => handleRemoveCar(item.id)}
+        />
         }
         keyExtractor={(item) => item.id}
       />
