@@ -1,15 +1,17 @@
 import GeneralView from '@/components/GeneralView'
 import QueueCardItem from '@/components/QueueCardItem'
 import Colors from '@/constants/Colors'
-import { StyleSheet, Text, View } from 'react-native'
+import { useQueueStore } from '@/store/queue.store'
+import { FlatList, StyleSheet, Text, View } from 'react-native'
 
 const QueueScreen = () => {
+  const { queue } = useQueueStore()
   return (
     <GeneralView>
       <Text style={styles.smText}>LIVE OPERATIONS</Text>
       <View style={styles.queueSection}>
         <Text style={styles.sectionTitle}>Service Queue</Text>
-        <Text style={styles.infoText}>8 Cars</Text>
+        <Text style={styles.infoText}>{queue.length} Cars</Text>
       </View>
       <View style={styles.queueSection}>
         <View style={styles.queueCurrentInfo}>
@@ -21,9 +23,18 @@ const QueueScreen = () => {
           <Text style={styles.queCurrentText}>02/03</Text>
         </View>
       </View>
-      <View>
-        <QueueCardItem />
-      </View>
+      <FlatList
+        data={queue}
+        renderItem={({ item }) => <QueueCardItem
+          carModel={item.model}
+          licensePlate={item.plateNumber}
+          packageName={item.tier}
+          initialStatusId={1}
+          key={item.id} />
+        }
+        keyExtractor={(item) => item.id}
+      />
+
     </GeneralView>
   )
 }

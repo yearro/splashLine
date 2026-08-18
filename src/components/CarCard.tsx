@@ -204,13 +204,14 @@ export default CarCard;
 const styles = StyleSheet.create({
   container: {
     gap: 12,
+    marginBottom: 20
   },
   card: {
     backgroundColor: Colors.primary,
     borderRadius: 18,
     padding: 20,
     shadowColor: Colors.primary,
-    shadowOffset: { width: 0, height: 6 },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.35,
     shadowRadius: 12,
     elevation: 8,
