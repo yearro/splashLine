@@ -204,7 +204,8 @@ export default CarCard;
 const styles = StyleSheet.create({
   container: {
     gap: 12,
-    marginBottom: 20
+    marginVertical: 20,
+    marginHorizontal: 10
   },
   card: {
     backgroundColor: Colors.primary,
