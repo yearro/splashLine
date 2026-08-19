@@ -43,3 +43,27 @@ export async function createServiceHistory(date: string, price: number, time_ser
   `, [date, price, time_service]);
   return result.lastInsertRowId;
 }
+
+export async function getAllServiceHistory(year: number) {
+  const db = await openDatabase();
+  const result = await db.getAllAsync(`SELECT 
+      strftime('%Y', date),
+      COUNT(*) AS total_servicios,
+      SUM(price) AS total_ingresos,
+      AVG(price) AS precio_promedio,
+      SUM(time_service) AS tiempo_total_minutos
+    FROM service_history
+    WHERE strftime('%Y', date) = ?
+    GROUP BY month
+    ORDER BY month DESC;`
+  [year]);
+  return result;
+}
+
+export async function addHistoryService(time_service: number, price: number) {
+  const db = await openDatabase();
+  const result = await db.runAsync(`
+    INSERT INTO service_history (date, price, time_service) VALUES (?, ?, ?)
+  `, [new Date().toISOString(), price, time_service]);
+  return result.lastInsertRowId;
+}

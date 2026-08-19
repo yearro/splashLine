@@ -152,7 +152,7 @@ const ServiceScreen = () => {
                   style={styles.plateInput}
                   placeholder="ABC-1234"
                   placeholderTextColor="#b0c4de"
-                  value={props.values.plateNumber}
+                  value={props.values.plateNumber.toUpperCase()}
                   onChangeText={props.handleChange('plateNumber')}
                   onBlur={props.handleBlur('plateNumber')}
                   autoCapitalize="characters"

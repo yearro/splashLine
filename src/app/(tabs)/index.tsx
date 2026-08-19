@@ -2,6 +2,7 @@ import GeneralView from '@/components/GeneralView'
 import QueueCardItem from '@/components/QueueCardItem'
 import Colors from '@/constants/Colors'
 import { useQueueStore } from '@/store/queue.store'
+import MaterialIcons from '@react-native-vector-icons/material-icons'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 
 const QueueScreen = () => {
@@ -27,20 +28,29 @@ const QueueScreen = () => {
           <Text style={styles.queCurrentText}>{queue.length} Cars</Text>
         </View>
       </View>
-      <FlatList
-        data={queue}
-        renderItem={({ item }) => <QueueCardItem
-          carModel={item.model}
-          licensePlate={item.plateNumber}
-          packageName={item.tier}
-          initialStatusId={1}
-          key={item.id}
-          onRemove={() => handleRemoveCar(item.id)}
-        />
-        }
-        keyExtractor={(item) => item.id}
-      />
-
+      {queue.length === 0 ? (
+        <View style={styles.emptyState}>
+          <MaterialIcons name="queue" size={48} color={Colors.primary} />
+          <Text style={styles.emptyTitle}>No queue yet</Text>
+          <Text style={styles.emptySubtitle}>
+            Add your first car to the queue
+          </Text>
+        </View>
+      ) : (
+        <FlatList
+          data={queue}
+          renderItem={({ item }) => <QueueCardItem
+            carModel={item.model}
+            licensePlate={item.plateNumber}
+            packageName={item.tier}
+            initialStatusId={1}
+            key={item.id}
+            onRemove={() => handleRemoveCar(item.id)}
+          />
+          }
+          keyExtractor={(item) => item.id}
+        />)
+      }
     </GeneralView>
   )
 }
@@ -77,5 +87,24 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_18pt-Regular',
     fontSize: 24,
     fontWeight: 'bold',
-  }
+  },
+  emptyState: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 12,
+    paddingBottom: 80,
+  },
+  emptyTitle: {
+    fontFamily: 'Inter_18pt-Medium',
+    fontSize: 18,
+    color: '#333',
+  },
+  emptySubtitle: {
+    fontFamily: 'Inter_18pt-Light',
+    fontSize: 14,
+    color: '#888',
+    textAlign: 'center',
+    paddingHorizontal: 30,
+  },
 })
