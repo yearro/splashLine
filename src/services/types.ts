@@ -10,3 +10,15 @@ export type ServiceHistory = {
   price: number;
   time_service: number;
 }
+
+export type CarInQueue = {
+  id: number;
+  createdAt: string;
+  make: string;
+  model: string;
+  phone: string;
+  plateNumber: string;
+  price: number;
+  status: string;
+  tier: string;
+}

@@ -1,5 +1,5 @@
+import CarCard from '@/components/CarCard'
 import GeneralView from '@/components/GeneralView'
-import QueueCardItem from '@/components/QueueCardItem'
 import Colors from '@/constants/Colors'
 import { useQueueStore } from '@/store/queue.store'
 import MaterialIcons from '@react-native-vector-icons/material-icons'
@@ -7,9 +7,13 @@ import { FlatList, StyleSheet, Text, View } from 'react-native'
 
 const QueueScreen = () => {
   const { queue, removeFromQueue } = useQueueStore()
+  //const { addServiceHistory } = useHistoryStore()
 
   const handleRemoveCar = (id: string) => {
     removeFromQueue(id)
+  }
+  const handleCompleteCar = (test: any) => {
+    console.log('complete', test)
   }
 
   return (
@@ -39,13 +43,14 @@ const QueueScreen = () => {
       ) : (
         <FlatList
           data={queue}
-          renderItem={({ item }) => <QueueCardItem
+          renderItem={({ item }) => <CarCard
             carModel={item.model}
             licensePlate={item.plateNumber}
             packageName={item.tier}
             initialStatusId={1}
             key={item.id}
             onRemove={() => handleRemoveCar(item.id)}
+            onCompletion={handleCompleteCar}
           />
           }
           keyExtractor={(item) => item.id}

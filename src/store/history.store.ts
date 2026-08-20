@@ -2,13 +2,13 @@ import { addHistoryService, getAllServiceHistory } from "@/services/dataService"
 import { ServiceHistory } from "@/services/types";
 import { create } from "zustand";
 
-interface historyStore {
+interface HistoryStore {
   totalServices: number,
   servicesHistory: ServiceHistory[] | null,
   addServiceHistory: (time_service: number, price: number) => Promise<boolean | number>,
   getServicesHistory: (year: number) => Promise<void>
 }
-export const useHistoryStore = create<historyStore>()((set, get) => ({
+export const useHistoryStore = create<HistoryStore>()((set, get) => ({
   totalServices: 0,
   servicesHistory: [],
   addServiceHistory: async (time_service: number, price: number) => {

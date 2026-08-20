@@ -15,7 +15,8 @@ interface CarCardProps {
   licensePlate: string;
   packageName?: string;
   initialStatusId?: number;
-  onRemove?: () => void;
+  onRemove: () => void;
+  onCompletion: (test: any) => void;
 }
 
 const CarCard = ({
@@ -24,6 +25,7 @@ const CarCard = ({
   packageName = 'Ceramic Pro Coating',
   initialStatusId = 1,
   onRemove,
+  onCompletion
 }: CarCardProps) => {
   const [currentStatusId, setCurrentStatusId] = useState<number>(initialStatusId);
   const [elapsedSeconds, setElapsedSeconds] = useState<number>(0);
@@ -174,7 +176,7 @@ const CarCard = ({
       {/* ── Action Button (Outside) ─────────────────────── */}
       {(isDelivered || isCancelled) && (
         <Pressable
-          onPress={onRemove}
+          onPress={isDelivered ? () => onCompletion('test') : onRemove}
           style={({ pressed }) => [
             styles.outsideRemoveBtn,
             isDelivered && { borderColor: 'rgba(0, 129, 144, 0.3)', shadowColor: Colors.primary },
