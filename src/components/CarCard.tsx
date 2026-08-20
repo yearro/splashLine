@@ -1,5 +1,6 @@
 import { carStatusList } from '@/constants/CarStatus';
 import Colors from '@/constants/Colors';
+import { formatTime } from '@/helpers/formatTime';
 import Ionicons from '@react-native-vector-icons/ionicons';
 import glyphmaps from '@react-native-vector-icons/ionicons/glyphmaps/Ionicons.json';
 import { useEffect, useRef, useState } from 'react';
@@ -11,18 +12,22 @@ type IoniconsName = keyof typeof glyphmaps;
 const TIMER_PAUSED_IDS = [5, 6, 7]; // Delivered, Paused, Cancelled
 
 interface CarCardProps {
+  id: string;
   carModel: string;
   licensePlate: string;
   packageName?: string;
+  price: number;
   initialStatusId?: number;
   onRemove: () => void;
-  onCompletion: (test: any) => void;
+  onCompletion: (id: string, elapsedSeconds: number, price: number) => void;
 }
 
 const CarCard = ({
+  id,
   carModel,
   licensePlate,
   packageName = 'Ceramic Pro Coating',
+  price,
   initialStatusId = 1,
   onRemove,
   onCompletion
@@ -59,17 +64,6 @@ const CarCard = ({
 
   const goToNext = () => {
     if (currentStatusId < carStatusList.length) setCurrentStatusId((id) => id + 1);
-  };
-
-  /* ── Helpers ─────────────────────────────────────────── */
-  const formatTime = (totalSeconds: number): string => {
-    const h = Math.floor(totalSeconds / 3600);
-    const m = Math.floor((totalSeconds % 3600) / 60);
-    const s = totalSeconds % 60;
-    if (h > 0) {
-      return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-    }
-    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
   };
 
   const isFirst = currentStatusId === 1;
@@ -176,7 +170,7 @@ const CarCard = ({
       {/* ── Action Button (Outside) ─────────────────────── */}
       {(isDelivered || isCancelled) && (
         <Pressable
-          onPress={isDelivered ? () => onCompletion('test') : onRemove}
+          onPress={isDelivered ? () => onCompletion(id, elapsedSeconds, price) : onRemove}
           style={({ pressed }) => [
             styles.outsideRemoveBtn,
             isDelivered && { borderColor: 'rgba(0, 129, 144, 0.3)', shadowColor: Colors.primary },
