@@ -1,9 +1,15 @@
 import GeneralView from '@/components/GeneralView';
 import TopNumbers from '@/components/TopNumbers';
+import { useHistoryStore } from '@/store/history.store';
+import { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { BarChart } from 'react-native-gifted-charts';
 
 const HistoryScreen = () => {
+  const { getTopNumbers, totalRevenue, totalServices } = useHistoryStore()
+  useEffect(() => {
+    getTopNumbers();
+  }, []);
 
   const data = [
     { value: 250, label: 'Mon' },
@@ -23,7 +29,7 @@ const HistoryScreen = () => {
           Manage the individual cleaning and maintenance services available for customers.
         </Text>
       </View>
-      <TopNumbers />
+      <TopNumbers totalRevenue={totalRevenue} totalServices={totalServices} />
       <BarChart
         data={data}
         height={200}

@@ -4,12 +4,16 @@ import Colors from '@/constants/Colors'
 import { useHistoryStore } from '@/store/history.store'
 import { useQueueStore } from '@/store/queue.store'
 import MaterialIcons from '@react-native-vector-icons/material-icons'
+import { useEffect } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 
 const QueueScreen = () => {
+  const { getTopNumbers, avgTime } = useHistoryStore()
   const { queue, removeFromQueue } = useQueueStore()
   const { addServiceHistory } = useHistoryStore()
-
+  useEffect(() => {
+    getTopNumbers();
+  }, []);
   const handleRemoveCar = (id: string) => {
     removeFromQueue(id)
   }
@@ -30,7 +34,7 @@ const QueueScreen = () => {
       <View style={styles.queueSection}>
         <View style={styles.queueCurrentInfo}>
           <Text style={styles.smText}>AVG. WAIT</Text>
-          <Text style={styles.queCurrentText}>4:23 min</Text>
+          <Text style={styles.queCurrentText}>{avgTime} min</Text>
         </View>
         <View style={styles.queueCurrentInfo}>
           <Text style={styles.smText}>TOTAL CARS</Text>

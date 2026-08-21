@@ -22,3 +22,9 @@ export type CarInQueue = {
   status: string;
   tier: string;
 }
+
+export type TopNumbers = {
+  total_servicios: number;
+  total_ingresos: number;
+  tiempo_total_minutos: number;
+}

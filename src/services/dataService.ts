@@ -1,3 +1,4 @@
+import { TopNumbers, ServiceHistory } from "./types";
 import { openDatabase } from "./db";
 
 export async function createService(name: string, price: number, description: string) {
@@ -45,7 +46,7 @@ export async function createServiceHistory(date: string, price: number, time_ser
 }
 export async function getTotalNumbers() {
   const db = await openDatabase();
-  const result = await db.getAllAsync(`SELECT
+  const result = await db.getFirstAsync<TopNumbers>(`SELECT
       COUNT(*) AS total_servicios,
       SUM(price) AS total_ingresos,
       AVG(time_service) AS tiempo_total_minutos
@@ -56,7 +57,7 @@ export async function getTotalNumbers() {
 
 export async function getAllServiceHistory(year: number) {
   const db = await openDatabase();
-  const result = await db.getAllAsync(`SELECT 
+  const result = await db.getAllAsync<ServiceHistory>(`SELECT 
       strftime('%Y', date),
       COUNT(*) AS total_servicios,
       SUM(price) AS total_ingresos,
@@ -65,7 +66,7 @@ export async function getAllServiceHistory(year: number) {
     FROM service_history
     WHERE strftime('%Y', date) = ?
     GROUP BY month
-    ORDER BY month DESC;`
+    ORDER BY month DESC;`,
   [year]);
   return result;
 }
