@@ -42,6 +42,7 @@ const PackagesListScreen = () => {
   return (
     <GeneralView>
       <View style={{ marginBottom: 20 }}>
+        <Text style={styles.title}>Packages List ({packages.length})</Text>
         <Text style={styles.sectionDescription}>
           Manage the individual cleaning and maintenance services available for customers.
         </Text>
@@ -130,6 +131,11 @@ const PackagesListScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
   sectionDescription: {
     fontFamily: 'Inter_18pt-Light',
     fontSize: 14,
