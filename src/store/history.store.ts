@@ -1,13 +1,14 @@
 import { formatTime } from "@/helpers/formatTime";
-import { addHistoryService, getAllServiceHistory, getTotalNumbers } from "@/services/dataService";
-import { ServiceHistory } from "@/services/types";
+import { getMonthName } from "@/helpers/montName";
+import { getAllServiceHistory, getTotalNumbers, seedHistory } from "@/services/dataService";
+import { BarChartHistory, ServiceHistory } from "@/services/types";
 import { create } from "zustand";
 
 interface HistoryStore {
   totalServices: number,
   totalRevenue: number,
   avgTime: string,
-  servicesHistory: ServiceHistory[] | null,
+  servicesHistory: BarChartHistory[],
   addServiceHistory: (time_service: number, price: number) => Promise<boolean | number>,
   getServicesHistory: (year: number) => Promise<void>,
   getTopNumbers: () => Promise<void>
@@ -19,13 +20,15 @@ export const useHistoryStore = create<HistoryStore>()((set, get) => ({
   servicesHistory: [],
   addServiceHistory: async (time_service: number, price: number) => {
     try {
-      const result = await addHistoryService(time_service, price);
+      //const result = await addHistoryService(time_service, price);
+      const result = await seedHistory()
       if (result) {
         set((state) => ({
           totalServices: state.totalServices + 1
         }))
       }
-      return result;
+      return true
+      //return result;
     } catch (error) {
       return false;
     }
@@ -48,8 +51,19 @@ export const useHistoryStore = create<HistoryStore>()((set, get) => ({
   },
   getServicesHistory: async (year: number) => {
     try {
-      const result: unknown[] = await getAllServiceHistory(year);
-      set(() => ({ totalServices: result.length, servicesHistory: result as ServiceHistory[] }))
+      const result = await getAllServiceHistory(year);
+      if (result.length === 0) {
+        set(() => ({ servicesHistory: [] }))
+        return;
+      }
+      const data: { value: number, label: string }[] = [];
+      for (let i = 0; i < 12; i++) {
+        const value = result.filter((item: ServiceHistory) => new Date(item.date).getMonth() === i);
+        const valueSum = Object.values(value).reduce((acc, item) => acc + item.price, 0)
+        data.push({ value: valueSum, label: getMonthName(i) })
+      }
+      set(() => ({ servicesHistory: data }))
+      console.log('data', data)
     } catch (error) {
       console.log("error", error);
     }

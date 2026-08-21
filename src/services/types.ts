@@ -5,10 +5,13 @@ export type Service = {
 }
 
 export type ServiceHistory = {
-  id?: number;
   date: string;
   price: number;
-  time_service: number;
+}
+
+export type BarChartHistory = {
+  value: number;
+  label: string;
 }
 
 export type CarInQueue = {

@@ -8,10 +8,14 @@ import { BarChart } from 'react-native-gifted-charts';
 
 const HistoryScreen = () => {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
-  const { getTopNumbers, totalRevenue, totalServices } = useHistoryStore()
+  const { getTopNumbers, totalRevenue, totalServices, getServicesHistory, servicesHistory } = useHistoryStore()
   useEffect(() => {
     getTopNumbers();
   }, []);
+
+  useEffect(() => {
+    getServicesHistory(currentYear);
+  }, [currentYear]);
 
   const navigateYear = (action: 'prev' | 'next') => {
     if (action === 'prev') {
@@ -20,16 +24,6 @@ const HistoryScreen = () => {
     }
     setCurrentYear(currentYear + 1)
   }
-
-  const data = [
-    { value: 250, label: 'Mon' },
-    { value: 450, label: 'Tue', frontColor: '#33FFC3' },
-    { value: 650, label: 'Wed' },
-    { value: 150, label: 'Thu', frontColor: '#33FFC3' },
-    { value: 800, label: 'Fri' },
-    { value: 300, label: 'Sat', frontColor: '#33FFC3' },
-    { value: 700, label: 'Sun' },
-  ];
 
   return (
     <GeneralView>
@@ -61,18 +55,19 @@ const HistoryScreen = () => {
           />
         </TouchableOpacity>
       </View>
-      <BarChart
-        data={data}
-        height={200}
-        barWidth={22}
-        noOfSections={3}
-        barBorderRadius={4}
-        frontColor={'#33FFC3'}
-        yAxisThickness={0}
-        xAxisType={'dashed'}
-        xAxisColor={'#9B9B9B'}
-        yAxisLabelPrefix={'$'}
-      />
+      <View style={{ flex: 1 }}>
+        <BarChart
+          data={servicesHistory}
+          noOfSections={3}
+          barBorderRadius={4}
+          frontColor={'#33FFC3'}
+          yAxisThickness={0}
+          xAxisType={'dashed'}
+          xAxisColor={'#9B9B9B'}
+          yAxisLabelPrefix={'$'}
+          yAxisLabelWidth={80}
+        />
+      </View>
     </GeneralView>
   )
 }
