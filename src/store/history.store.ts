@@ -63,7 +63,6 @@ export const useHistoryStore = create<HistoryStore>()((set, get) => ({
         data.push({ value: valueSum, label: getMonthName(i) })
       }
       set(() => ({ servicesHistory: data }))
-      console.log('data', data)
     } catch (error) {
       console.log("error", error);
     }
