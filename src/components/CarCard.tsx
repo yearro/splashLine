@@ -229,6 +229,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
     gap: 6,
+    maxWidth: 200,
   },
   statusDot: {
     width: 8,
