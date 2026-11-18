@@ -1,3 +1,4 @@
+import EmptyMessage from '@/components/EmptyMessage';
 import Footer from '@/components/Footer';
 import GeneralView from '@/components/GeneralView';
 import Colors from '@/constants/Colors';
@@ -47,75 +48,70 @@ const PackagesListScreen = () => {
           Manage the individual cleaning and maintenance services available for customers.
         </Text>
       </View>
-
-      {packages.length === 0 ? (
-        <View style={styles.emptyState}>
-          <MaterialIcons name="inventory-2" size={48} color={Colors.primary} />
-          <Text style={styles.emptyTitle}>No packages yet</Text>
-          <Text style={styles.emptySubtitle}>
-            Tap the + button to create your first service package.
-          </Text>
-        </View>
-      ) : (
-        <FlatList
-          data={packages}
-          keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={{ paddingBottom: 100 }}
-          renderItem={({ item }) => {
-            const price = getPackagePrice(item.serviceIds);
-            const includedServices = getPackageServices(item.serviceIds);
-            return (
-              <View style={styles.card}>
-                <View style={styles.cardHeader}>
-                  <View style={styles.titleWithIcon}>
-                    {item.icon ? (
-                      <View style={styles.iconContainer}>
-                        <MaterialIcons name={item.icon as any} size={22} color={Colors.primary} />
-                      </View>
-                    ) : null}
-                    <Text style={styles.cardTitle}>{item.name}</Text>
-                  </View>
-                  <View style={styles.actionButtons}>
-                    <TouchableOpacity
-                      onPress={() => handlePackages(item.id)}
-                      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                    >
-                      <MaterialIcons name="edit" size={24} color="#00a896" />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => handleDelete(item.id)}
-                      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                    >
-                      <MaterialIcons name="delete-outline" size={24} color="#e53935" />
-                    </TouchableOpacity>
-                  </View>
+      <FlatList
+        data={packages}
+        keyExtractor={(item) => item.id.toString()}
+        contentContainerStyle={{ paddingBottom: 100 }}
+        renderItem={({ item }) => {
+          const price = getPackagePrice(item.serviceIds);
+          const includedServices = getPackageServices(item.serviceIds);
+          return (
+            <View style={styles.card}>
+              <View style={styles.cardHeader}>
+                <View style={styles.titleWithIcon}>
+                  {item.icon ? (
+                    <View style={styles.iconContainer}>
+                      <MaterialIcons name={item.icon as any} size={22} color={Colors.primary} />
+                    </View>
+                  ) : null}
+                  <Text style={styles.cardTitle}>{item.name}</Text>
                 </View>
-
-                {item.description ? (
-                  <Text style={styles.cardDescription}>{item.description}</Text>
-                ) : null}
-
-                {includedServices.length > 0 && (
-                  <View style={styles.servicesListContainer}>
-                    {includedServices.map((service) => (
-                      <View key={service.id} style={styles.serviceItemRow}>
-                        <MaterialIcons name="check" size={20} color="#00a896" style={styles.checkIcon} />
-                        <Text style={styles.serviceItemName}>{service.name}</Text>
-                      </View>
-                    ))}
-                  </View>
-                )}
-
-                <View style={styles.priceRow}>
-                  <Text style={styles.priceSymbol}>$ </Text>
-                  <Text style={styles.priceAmount}>{price > 0 ? price : 15}</Text>
+                <View style={styles.actionButtons}>
+                  <TouchableOpacity
+                    onPress={() => handlePackages(item.id)}
+                    hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                  >
+                    <MaterialIcons name="edit" size={24} color="#00a896" />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => handleDelete(item.id)}
+                    hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                  >
+                    <MaterialIcons name="delete-outline" size={24} color="#e53935" />
+                  </TouchableOpacity>
                 </View>
               </View>
-            );
-          }}
-        />
-      )}
 
+              {item.description ? (
+                <Text style={styles.cardDescription}>{item.description}</Text>
+              ) : null}
+
+              {includedServices.length > 0 && (
+                <View style={styles.servicesListContainer}>
+                  {includedServices.map((service) => (
+                    <View key={service.id} style={styles.serviceItemRow}>
+                      <MaterialIcons name="check" size={20} color="#00a896" style={styles.checkIcon} />
+                      <Text style={styles.serviceItemName}>{service.name}</Text>
+                    </View>
+                  ))}
+                </View>
+              )}
+
+              <View style={styles.priceRow}>
+                <Text style={styles.priceSymbol}>$ </Text>
+                <Text style={styles.priceAmount}>{price > 0 ? price : 15}</Text>
+              </View>
+            </View>
+          );
+        }}
+        ListEmptyComponent={
+          <EmptyMessage
+            title='No packages yet'
+            subTitle='Tap the + button to create your first service package.'
+            icon='inventory-2'
+          />
+        }
+      />
       {/* FAB */}
       <TouchableOpacity
         style={styles.fab}
@@ -141,25 +137,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#333',
     lineHeight: 20,
-  },
-  emptyState: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 12,
-    paddingBottom: 80,
-  },
-  emptyTitle: {
-    fontFamily: 'Inter_18pt-Medium',
-    fontSize: 18,
-    color: '#333',
-  },
-  emptySubtitle: {
-    fontFamily: 'Inter_18pt-Light',
-    fontSize: 14,
-    color: '#888',
-    textAlign: 'center',
-    paddingHorizontal: 30,
   },
   card: {
     backgroundColor: '#ffffff',

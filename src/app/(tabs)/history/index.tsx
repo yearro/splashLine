@@ -1,3 +1,4 @@
+import EmptyMessage from '@/components/EmptyMessage';
 import GeneralView from '@/components/GeneralView';
 import TopNumbers from '@/components/TopNumbers';
 import { useHistoryStore } from '@/store/history.store';
@@ -36,11 +37,13 @@ const HistoryScreen = () => {
       <TopNumbers totalRevenue={totalRevenue} totalServices={totalServices} />
       <View style={styles.navContainer}>
         <TouchableOpacity
+          disabled={servicesHistory.length === 0}
           onPress={() => navigateYear('prev')}
         >
           <Ionicons
             name="chevron-back"
             size={30}
+            color={servicesHistory.length === 0 ? '#9B9B9B' : 'black'}
           />
         </TouchableOpacity>
         <Text style={styles.textCurrentYear}>{currentYear}</Text>
@@ -56,17 +59,30 @@ const HistoryScreen = () => {
         </TouchableOpacity>
       </View>
       <View style={{ flex: 1 }}>
-        <BarChart
-          data={servicesHistory}
-          noOfSections={3}
-          barBorderRadius={4}
-          frontColor={'#33FFC3'}
-          yAxisThickness={0}
-          xAxisType={'dashed'}
-          xAxisColor={'#9B9B9B'}
-          yAxisLabelPrefix={'$'}
-          yAxisLabelWidth={80}
-        />
+        {
+          servicesHistory.length === 0 ? (
+            <EmptyMessage
+              title='Year with no records'
+              subTitle='There are no records available for this year.'
+              icon='access-time'
+            />
+          ) : (
+            <BarChart
+              data={servicesHistory}
+              noOfSections={3}
+              barBorderRadius={4}
+              frontColor={'#33FFC3'}
+              yAxisThickness={0}
+              xAxisType={'dashed'}
+              xAxisColor={'#9B9B9B'}
+              yAxisLabelPrefix={'$'}
+              yAxisLabelWidth={80}
+              showScrollIndicator={true}
+              nestedScrollEnabled={true}
+            />
+          )
+        }
+
       </View>
     </GeneralView>
   )

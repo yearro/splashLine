@@ -1,9 +1,9 @@
 import CarCard from '@/components/CarCard'
+import EmptyMessage from '@/components/EmptyMessage'
 import GeneralView from '@/components/GeneralView'
 import Colors from '@/constants/Colors'
 import { useHistoryStore } from '@/store/history.store'
 import { useQueueStore } from '@/store/queue.store'
-import MaterialIcons from '@react-native-vector-icons/material-icons'
 import { useEffect } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 
@@ -42,13 +42,11 @@ const QueueScreen = () => {
         </View>
       </View>
       {queue.length === 0 ? (
-        <View style={styles.emptyState}>
-          <MaterialIcons name="queue" size={48} color={Colors.primary} />
-          <Text style={styles.emptyTitle}>No queue yet</Text>
-          <Text style={styles.emptySubtitle}>
-            Add your first car to the queue
-          </Text>
-        </View>
+        <EmptyMessage
+          title='No queue yet'
+          subTitle='Add your first car to the queue'
+          icon='queue'
+        />
       ) : (
         <FlatList
           data={queue}

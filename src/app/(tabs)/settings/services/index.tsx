@@ -1,3 +1,4 @@
+import EmptyMessage from '@/components/EmptyMessage';
 import Footer from '@/components/Footer';
 import GeneralView from '@/components/GeneralView';
 import ServiceListItem from '@/components/ServiceListItem';
@@ -64,13 +65,11 @@ const ServicesListScreen = () => {
           />
         )}
         ListEmptyComponent={
-          <View style={styles.emptyState}>
-            <MaterialIcons name="local-car-wash" size={48} color={Colors.primary} />
-            <Text style={styles.emptyTitle}>No services yet</Text>
-            <Text style={styles.emptySubtitle}>
-              Tap the + button to add your first cleaning or maintenance service.
-            </Text>
-          </View>
+          <EmptyMessage
+            title='No services yet'
+            subTitle='Tap the + button to add your first cleaning or maintenance service.'
+            icon='local-car-wash'
+          />
         }
       />
       <TouchableOpacity style={styles.addServiceButton} onPress={() => handleService(-1)}>
