@@ -1,6 +1,6 @@
 import { formatTime } from "@/helpers/formatTime";
 import { getMonthName } from "@/helpers/montName";
-import { getAllServiceHistory, getTotalNumbers, seedHistory } from "@/services/dataService";
+import { addHistoryService, getAllServiceHistory, getTotalNumbers } from "@/services/dataService";
 import { BarChartHistory, ServiceHistory } from "@/services/types";
 import { create } from "zustand";
 
@@ -20,15 +20,13 @@ export const useHistoryStore = create<HistoryStore>()((set, get) => ({
   servicesHistory: [],
   addServiceHistory: async (time_service: number, price: number) => {
     try {
-      //const result = await addHistoryService(time_service, price);
-      const result = await seedHistory()
+      const result = await addHistoryService(time_service, price);
       if (result) {
         set((state) => ({
           totalServices: state.totalServices + 1
         }))
       }
       return true
-      //return result;
     } catch (error) {
       return false;
     }

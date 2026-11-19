@@ -68,6 +68,7 @@ export async function addHistoryService(time_service: number, price: number) {
   `, [new Date().toISOString(), price, time_service]);
   return result.lastInsertRowId;
 }
+
 export async function seedHistory() {
   const db = await openDatabase();
 
