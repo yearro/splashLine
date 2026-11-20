@@ -21,7 +21,8 @@ const QueueScreen = () => {
   const handleCompleteCar = async (id: string, elapsedSeconds: number, price: number) => {
     const result = await addServiceHistory(elapsedSeconds, price)
     if (result) {
-      removeFromQueue(id)
+      removeFromQueue(id);
+      getTopNumbers();
     }
   }
 

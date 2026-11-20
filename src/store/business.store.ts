@@ -65,7 +65,6 @@ export const useBusinessStore = create<businessStore>()((set, get) => ({
     }
   },
   addToPackages: async (id: number, name: string, description: string, serviceIds: number[] = [], icon: string = 'local-car-wash') => {
-    console.log("llega al add to packages")
     try {
       const result = id < 0 ? await createPackage(name, description, serviceIds, icon) : await updatePackage(id, name, description, serviceIds, icon);
       if (id > 0) {
