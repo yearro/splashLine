@@ -1,5 +1,4 @@
 import EmptyMessage from '@/components/EmptyMessage';
-import Footer from '@/components/Footer';
 import GeneralView from '@/components/GeneralView';
 import Colors from '@/constants/Colors';
 import { useBusinessStore } from '@/store/business.store';
@@ -120,8 +119,6 @@ const PackagesListScreen = () => {
       >
         <MaterialIcons name="add" size={28} color="white" />
       </TouchableOpacity>
-
-      <Footer />
     </GeneralView>
   );
 };

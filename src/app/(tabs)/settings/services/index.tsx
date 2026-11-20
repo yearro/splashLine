@@ -1,5 +1,4 @@
 import EmptyMessage from '@/components/EmptyMessage';
-import Footer from '@/components/Footer';
 import GeneralView from '@/components/GeneralView';
 import ServiceListItem from '@/components/ServiceListItem';
 import Colors from '@/constants/Colors';
@@ -75,7 +74,6 @@ const ServicesListScreen = () => {
       <TouchableOpacity style={styles.addServiceButton} onPress={() => handleService(-1)}>
         <MaterialIcons name="add" size={24} color="white" />
       </TouchableOpacity>
-      <Footer />
     </GeneralView>
   );
 }

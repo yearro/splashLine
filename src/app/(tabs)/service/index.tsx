@@ -1,3 +1,4 @@
+import Footer from '@/components/Footer';
 import GeneralView from '@/components/GeneralView';
 import Colors from '@/constants/Colors';
 import { useBusinessStore } from '@/store/business.store';
@@ -298,6 +299,7 @@ const ServiceScreen = () => {
             </View>
           )}
         </Formik>
+        <Footer />
       </ScrollView>
     </GeneralView>
   );
